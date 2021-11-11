@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+    <Folder Include="User\" />
+    <Folder Include="User\Config\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
+    <ProjectReference Include="..\DDDTemplate.Infrastructure\DDDTemplate.Infrastructure.csproj" />
+    <ProjectReference Include="..\DDDTemplate.Persistence\DDDTemplate.Persistence.csproj" />
+    <ProjectReference Include="..\DDDTemplate.Application.Contracts\DDDTemplate.Application.Contracts.csproj" />
+    <ProjectReference Include="..\DDDTemplate.Application.Abstraction\DDDTemplate.Application.Abstraction.csproj" />
+  </ItemGroup>
+</Project>

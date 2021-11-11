@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="User\Enums\" />
+  </ItemGroup>
+</Project>
