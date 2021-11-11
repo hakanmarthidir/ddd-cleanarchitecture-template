@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.User;
-using DDDTemplate.Persistence.Repository;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 
-namespace DDDTemplate.Persistence.Uow
+namespace DDDTemplate.Persistence.Context.Relational.Uow
 {
     public interface IEFUnitOfWork : IDisposable
     {
-        IRepository<User> UserRepository { get; }
+        //IUserRepository UserRepository { get; }
         int Save();
         Task<int> SaveAsync(CancellationToken token = default(CancellationToken));
     }

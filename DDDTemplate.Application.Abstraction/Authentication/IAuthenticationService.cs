@@ -10,10 +10,10 @@ namespace DDDTemplate.Application.Abstraction.Authentication
     {
         Task<IServiceResponse> SignUpAsync(UserRegisterRequest userDto);
         Task<IServiceResponse<UserLoginResponse>> SignInAsync(string userEmail, string userPassword);
-        Task<IServiceResponse<JwtMiddlewareResponse>> GetJwtUserbyIdAsync<T>(Guid? userId);
-        IServiceResponse<IsTokenValidResponse> ValidateToken<T>(string token);
+        Task<IServiceResponse<JwtMiddlewareResponse>> GetJwtUserbyIdAsync(Guid userId);
+        IServiceResponse<IsTokenValidResponse> ValidateToken(string token);
         Task<IServiceResponse> ForgotPasswordAsync(string userEmail);
-        Task<IServiceResponse> ResetPasswordAsync(Guid? userId, string password, string passwordConfirm);
-        Task<IServiceResponse> SendActivationEmail(Guid? userId);
+        Task<IServiceResponse> ResetPasswordAsync(Guid userId, string password, string passwordConfirm);
+        Task<IServiceResponse> SendActivationEmail(Guid userId);
     }
 }

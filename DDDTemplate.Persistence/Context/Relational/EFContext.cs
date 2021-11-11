@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using DDDTemplate.Domain.User;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 
 namespace DDDTemplate.Persistence.Context.Relational
 {

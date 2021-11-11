@@ -1,6 +1,4 @@
-﻿using DDDTemplate.Domain.Shared;
-
-namespace DDDTemplate.Persistence.Repository
+﻿namespace DDDTemplate.Domain.SeedWork
 {
     public interface IRepository<TEntity> : IReadRepository<TEntity>, IWriteRepository<TEntity> where TEntity : class, IEntity
     {

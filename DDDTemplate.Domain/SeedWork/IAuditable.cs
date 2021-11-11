@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DDDTemplate.Domain.Shared
+namespace DDDTemplate.Domain.SeedWork
 {
     public interface IAuditable
     {

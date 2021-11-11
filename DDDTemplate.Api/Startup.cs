@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDTemplate.Application.Extensions;
+using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,18 +18,32 @@ namespace DDDTemplate.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
+        public IWebHostEnvironment HostingEnvironment { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Choose Database Context
+            //--------MySql MariaDb-------------
+            //services.AddMySqlDatabaseContext(Configuration);
 
-            services.AddControllers();
+            //---------MongoDB------------
+            services.AddMongoDatabaseContext();
+
+            //Implementation Of Repositories and Services
+            services.AddRepositories();
+            services.AddServices();
+            //---------------------
+
+            services.AddCors();
+            services.AddControllers().AddNewtonsoftJson();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DDDTemplate.Api", Version = "v1" });
@@ -38,14 +55,24 @@ namespace DDDTemplate.Api
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/error-local-development");
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "DDDTemplate.Api v1"));
+            }
+            else
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseCors(x => x
+               .AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader());
+
+            // custom jwt auth middleware
+            //app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

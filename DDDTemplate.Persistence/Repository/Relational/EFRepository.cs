@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.Shared;
+using DDDTemplate.Domain.SeedWork;
 using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.EntityFrameworkCore;
 

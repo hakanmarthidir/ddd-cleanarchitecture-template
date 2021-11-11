@@ -8,6 +8,10 @@
     <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="User\Enums\" />
+    <Folder Include="AggregatesModel\" />
+    <Folder Include="AggregatesModel\UserAggregate\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.13.2" />
   </ItemGroup>
 </Project>

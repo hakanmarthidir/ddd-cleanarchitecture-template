@@ -9,22 +9,23 @@ namespace DDDTemplate.Application.User
 {
     public class AuthenticationService : IAuthenticationService
     {
+
         public Task<IServiceResponse> ForgotPasswordAsync(string userEmail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse<JwtMiddlewareResponse>> GetJwtUserbyIdAsync<T>(Guid? userId)
+        public Task<IServiceResponse<JwtMiddlewareResponse>> GetJwtUserbyIdAsync(Guid userId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse> ResetPasswordAsync(Guid? userId, string password, string passwordConfirm)
+        public Task<IServiceResponse> ResetPasswordAsync(Guid userId, string password, string passwordConfirm)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse> SendActivationEmail(Guid? userId)
+        public Task<IServiceResponse> SendActivationEmail(Guid userId)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +40,7 @@ namespace DDDTemplate.Application.User
             throw new NotImplementedException();
         }
 
-        public IServiceResponse<IsTokenValidResponse> ValidateToken<T>(string token)
+        public IServiceResponse<IsTokenValidResponse> ValidateToken(string token)
         {
             throw new NotImplementedException();
         }

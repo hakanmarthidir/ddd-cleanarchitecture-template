@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using DDDTemplate.Domain.Shared;
-using DDDTemplate.Domain.Users.Enums;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
+using DDDTemplate.Domain.SeedWork;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace DDDTemplate.Domain.User
+namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {
     public class User : IEntity, IAuditable, ISoftDelete
     {
+        //Open if you use MongoContext
+        //[BsonId]
+        //[BsonRepresentation(BsonType.ObjectId)]
         public virtual Guid Id { get; set; }
         public virtual DateTimeOffset? CreatedDate { get; set; }
         public virtual DateTimeOffset? ModifiedDate { get; set; }

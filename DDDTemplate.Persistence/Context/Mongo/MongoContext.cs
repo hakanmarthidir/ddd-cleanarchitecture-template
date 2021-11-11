@@ -1,4 +1,5 @@
 ﻿using System.Security.Authentication;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
@@ -6,14 +7,13 @@ namespace DDDTemplate.Persistence.Context.Mongo
 {
     public class MongoContext : IMongoContext
     {
-        private readonly MongoConfig _mongoConfig;
 
-        public MongoContext(IOptionsMonitor<MongoConfig> mongoConfig)
+        public MongoContext(IConfiguration configuration)
         {
-            this._mongoConfig = mongoConfig.CurrentValue;
-            var url = new MongoUrl(this._mongoConfig.ConnectionString);
+            var mongoConnectionString = configuration.GetConnectionString("MongoConnection");
+            var url = new MongoUrl(mongoConnectionString);
             MongoClientSettings settings = MongoClientSettings.FromUrl(url);
-            //settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
             var client = new MongoClient(settings);
             Database = client.GetDatabase(url.DatabaseName);
         }

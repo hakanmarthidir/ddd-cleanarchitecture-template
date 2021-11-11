@@ -1,9 +1,9 @@
 ﻿using System;
-using DDDTemplate.Domain.Shared;
-using DDDTemplate.Domain.Users.Enums;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
+using DDDTemplate.Domain.SeedWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using DDDTemplate.Domain.User;
 
 namespace DDDTemplate.Persistence.Context.Relational
 {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.Shared;
 
-namespace DDDTemplate.Persistence.Repository
+namespace DDDTemplate.Domain.SeedWork
 {
     public interface IWriteRepository<TEntity> where TEntity : class, IEntity
     {

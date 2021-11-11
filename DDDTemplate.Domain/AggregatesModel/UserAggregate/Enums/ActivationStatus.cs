@@ -1,4 +1,4 @@
-﻿namespace DDDTemplate.Domain.Users.Enums
+﻿namespace DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums
 {
     public enum ActivationStatus : byte
     {

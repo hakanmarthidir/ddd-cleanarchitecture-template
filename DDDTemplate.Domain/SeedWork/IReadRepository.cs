@@ -4,9 +4,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.Shared;
 
-namespace DDDTemplate.Persistence.Repository
+namespace DDDTemplate.Domain.SeedWork
 {
     public interface IReadRepository<TEntity> where TEntity : class, IEntity
     {

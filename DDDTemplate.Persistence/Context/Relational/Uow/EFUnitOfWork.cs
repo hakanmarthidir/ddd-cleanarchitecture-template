@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.User;
-using DDDTemplate.Persistence.Context.Relational;
-using DDDTemplate.Persistence.Repository;
-using DDDTemplate.Persistence.Repository.Relational;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Persistence.Repository.User;
 
-namespace DDDTemplate.Persistence.Uow
+namespace DDDTemplate.Persistence.Context.Relational.Uow
 {
     public class EFUnitOfWork : IEFUnitOfWork
     {
         private readonly EFContext _context;
 
-        private IRepository<User> _userRepository { get; }
-
+        //private IUserRepository _userRepository { get; }
 
         public EFUnitOfWork(EFContext context)
         {
             _context = context;
         }
 
-        public IRepository<User> UserRepository
-        {
-            get { return _userRepository ?? new EFRepository<User>(_context); }
-        }
+        //public IUserRepository UserRepository
+        //{
+        //    get { return _userRepository ?? new UserRepository(_context); }
+        //}
 
         public int Save()
         {
