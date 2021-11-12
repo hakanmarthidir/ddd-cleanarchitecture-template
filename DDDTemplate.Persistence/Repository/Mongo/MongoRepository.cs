@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using DDDTemplate.Domain.SeedWork;
 using DDDTemplate.Persistence.Context.Mongo;
 using Microsoft.EntityFrameworkCore;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Repository.Mongo
@@ -18,6 +21,7 @@ namespace DDDTemplate.Persistence.Repository.Mongo
 
         public MongoRepository(IMongoContext dbContext)
         {
+            BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
             this._dbContext = dbContext;
             this._collection = _dbContext.Database.GetCollection<TEntity>(typeof(TEntity).Name);
         }

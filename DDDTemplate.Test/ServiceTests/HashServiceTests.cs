@@ -2,7 +2,7 @@
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DDDTemplate.Test
+namespace DDDTemplate.Test.ServiceTests
 {
     [TestClass]
     public class HashServiceTests

@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using DDDTemplate.Api.Middlewares;
 using DDDTemplate.Application.Extensions;
-using DDDTemplate.Persistence.Context.Relational;
+using DDDTemplate.Application.User.Config;
+using DDDTemplate.Infrastructure.Notification.Config;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
 namespace DDDTemplate.Api
@@ -30,6 +25,9 @@ namespace DDDTemplate.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<MailGunConfig>(Configuration.GetSection("EmailConfig"));
+            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+
             //Choose Database Context
             //--------MySql MariaDb-------------
             //services.AddMySqlDatabaseContext(Configuration);
@@ -72,7 +70,7 @@ namespace DDDTemplate.Api
                .AllowAnyHeader());
 
             // custom jwt auth middleware
-            //app.UseMiddleware<JwtMiddleware>();
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -6,28 +6,17 @@ using DDDTemplate.Infrastructure.Response;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.Extensions.DependencyInjection;
 using DDDTemplate.Application.Abstraction.Authentication;
-using DDDTemplate.Persistence.Repository;
-using DDDTemplate.Persistence.Repository.Relational;
-using DDDTemplate.Persistence.Repository.Mongo;
-using DDDTemplate.Domain.SeedWork;
 using DDDTemplate.Persistence.Repository.User;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Driver;
 using DDDTemplate.Persistence.Context.Mongo;
-using DDDTemplate.Infrastructure.Notification.Config;
 
 namespace DDDTemplate.Application.Extensions
 {
     public static class ServiceCollectionExtension
     {
-
-        public static void AddConfigs(this IServiceCollection services, IConfiguration configuration)
-        {
-
-        }
 
         public static void AddMySqlDatabaseContext(this IServiceCollection services, IConfiguration configuration)
         {
