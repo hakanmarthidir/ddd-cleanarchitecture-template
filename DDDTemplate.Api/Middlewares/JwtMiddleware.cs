@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DDDTemplate.Application.Abstraction.Authentication;
-using DDDTemplate.Application.Contracts.Auth.Response;
 using DDDTemplate.Application.User.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

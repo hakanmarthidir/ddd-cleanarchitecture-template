@@ -1,6 +1,5 @@
 ﻿using System.Security.Authentication;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Context.Mongo

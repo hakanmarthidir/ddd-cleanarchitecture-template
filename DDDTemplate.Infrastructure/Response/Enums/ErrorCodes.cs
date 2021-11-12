@@ -1,5 +1,4 @@
-﻿using System;
-namespace DDDTemplate.Infrastructure.Response.Enums
+﻿namespace DDDTemplate.Infrastructure.Response.Enums
 {
     public enum ErrorCodes : byte
     {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace DDDTemplate.Infrastructure.Notification.Config
+﻿namespace DDDTemplate.Infrastructure.Notification.Config
 {
     public class MailGunConfig
     {

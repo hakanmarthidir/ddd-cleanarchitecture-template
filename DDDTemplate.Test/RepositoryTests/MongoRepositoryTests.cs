@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DDDTemplate.Infrastructure.Security.Hash;
 using DDDTemplate.Persistence.Context.Mongo;
 using DDDTemplate.Persistence.Repository.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
-using Moq;
 
 namespace DDDTemplate.Test.RepositoryTests
 {
@@ -20,6 +15,19 @@ namespace DDDTemplate.Test.RepositoryTests
             {"ConnectionStrings:MongoConnection", "mongodb://localhost:27017/template"}
         };
 
+        // 1. Called once before each test
+        public MongoRepositoryTests()
+        {
+        }
+
+        // 2. Called once before each test after the constructor
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            Console.WriteLine("TestInitialize");
+        }
+
+        //3.
         [TestMethod]
         public void MongoRepository_Insert_ShouldBeTrue()
         {
@@ -44,6 +52,20 @@ namespace DDDTemplate.Test.RepositoryTests
 
             var users = _repository.Find(x => x.Email == "aaaa@abcd.com").ToList();
             Assert.IsTrue(users.Count > 0);
+        }
+
+
+        // 4. Called once after each test before the Dispose method
+        [TestCleanup]
+        public void TestCleanup()
+        {
+
+        }
+
+        // 5. Called once after each test
+        public void Dispose()
+        {
+
         }
     }
 }
