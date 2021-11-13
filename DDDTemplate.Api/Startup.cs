@@ -48,18 +48,23 @@ namespace DDDTemplate.Api
             //---------------------
 
             services.AddCors();
-            services.AddControllers().AddNewtonsoftJson();
+            services.AddControllers(opt =>
+                {
+                    opt.Filters.Add(typeof(ValidatorActionFilter));
+                })
+                .AddNewtonsoftJson()
+                .AddFluentValidation(fv =>
+                {
+                    fv.ImplicitlyValidateChildProperties = true;
+                    fv.ImplicitlyValidateRootCollectionElements = true;
+                    fv.RegisterValidatorsFromAssemblyContaining<IDataValidator>();
+
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "DDDTemplate.Api", Version = "v1" });
             });
-
-
-            services.AddMvc(opt =>
-            {
-                opt.Filters.Add(typeof(ValidatorActionFilter));
-            }).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IDataValidator>());
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
