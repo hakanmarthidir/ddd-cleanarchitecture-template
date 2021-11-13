@@ -8,12 +8,12 @@ namespace DDDTemplate.Application.Abstraction.Authentication
 {
     public interface IAuthenticationService
     {
-        Task<IServiceResponse> SignUpAsync(UserRegisterRequest userDto);
-        Task<IServiceResponse<UserLoginResponse>> SignInAsync(string userEmail, string userPassword);
-        Task<IServiceResponse<JwtMiddlewareResponse>> GetJwtUserbyIdAsync(Guid userId);
-        IServiceResponse<IsTokenValidResponse> ValidateToken(string token);
-        Task<IServiceResponse> ForgotPasswordAsync(string userEmail);
-        Task<IServiceResponse> ResetPasswordAsync(Guid userId, string password, string passwordConfirm);
-        Task<IServiceResponse> SendActivationEmail(Guid userId);
+        Task<IServiceResponse> SignUpAsync(UserRegisterDto userDto);
+        Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto);
+        Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto);
+        Task<IServiceResponse<IsTokenValidDto>> ValidateTokenAsync(UserTokenDto userTokenDto);
+        Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
+        Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
+        Task<IServiceResponse> SendActivationEmailAsync(UserIdDto userIdDto);
     }
 }

@@ -11,7 +11,7 @@ namespace DDDTemplate.Api.Attributes
     {
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var user = (JwtMiddlewareResponse)context.HttpContext.Items["User"];
+            var user = (JwtMiddlewareDto)context.HttpContext.Items["User"];
             if (user == null)
             {
                 // not logged in

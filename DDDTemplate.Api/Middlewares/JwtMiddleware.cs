@@ -60,7 +60,8 @@ namespace DDDTemplate.Api.Middlewares
                 var userId = Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
 
                 // attach user to context on successful jwt validation
-                var jwtUserResult = await authService.GetJwtUserbyIdAsync(userId).ConfigureAwait(false);
+                var jwtUserResult = await authService.GetJwtUserbyIdAsync(
+                    new Application.Contracts.Auth.Request.UserIdDto() { Id = userId }).ConfigureAwait(false);
                 if (jwtUserResult != null)
                 {
                     var jwtUser = jwtUserResult.Data;

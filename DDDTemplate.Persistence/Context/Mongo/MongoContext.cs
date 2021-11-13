@@ -1,5 +1,9 @@
-﻿using System.Security.Authentication;
+﻿using System;
+using System.Security.Authentication;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Context.Mongo

@@ -8,9 +8,9 @@ namespace DDDTemplate.Application.Abstraction.Profile
 {
     public interface IProfileService
     {
-        Task<IServiceResponse<UserProfileResponse>> GetProfilebyIdAsync<T>(Guid? userId);
-        Task<IServiceResponse<UserProfileResponse>> GetProfilebyEmailAsync<T>(string userEmail);
-        Task<IServiceResponse> UpdateProfileAsync(Guid? userId, UserProfileUpdateRequest profile);
+        Task<IServiceResponse<UserProfileDto>> GetProfilebyIdAsync<T>(Guid? userId);
+        Task<IServiceResponse<UserProfileDto>> GetProfilebyEmailAsync<T>(string userEmail);
+        Task<IServiceResponse> UpdateProfileAsync(Guid? userId, UserProfileUpdateDto profile);
         Task<IServiceResponse> UpdateActivationCodeAsync(Guid? userId, string userActivationCode);
         Task<IServiceResponse> DeleteProfileAsync(Guid? userId);
         Task<IServiceResponse<bool>> GetProfileLicenseStatusbyIdAsync(Guid? userId);

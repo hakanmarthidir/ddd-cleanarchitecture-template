@@ -15,7 +15,7 @@ namespace DDDTemplate.Api.Controllers.Base
         {
             get
             {
-                return ((JwtMiddlewareResponse)HttpContext.Items["User"]).Id;
+                return ((JwtMiddlewareDto)HttpContext.Items["User"]).Id;
             }
         }
         protected string RequesterToken

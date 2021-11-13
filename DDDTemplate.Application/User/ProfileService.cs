@@ -14,12 +14,12 @@ namespace DDDTemplate.Application.User
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse<UserProfileResponse>> GetProfilebyEmailAsync<T>(string userEmail)
+        public Task<IServiceResponse<UserProfileDto>> GetProfilebyEmailAsync<T>(string userEmail)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse<UserProfileResponse>> GetProfilebyIdAsync<T>(Guid? userId)
+        public Task<IServiceResponse<UserProfileDto>> GetProfilebyIdAsync<T>(Guid? userId)
         {
             throw new NotImplementedException();
         }
@@ -34,7 +34,7 @@ namespace DDDTemplate.Application.User
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse> UpdateProfileAsync(Guid? userId, UserProfileUpdateRequest profile)
+        public Task<IServiceResponse> UpdateProfileAsync(Guid? userId, UserProfileUpdateDto profile)
         {
             throw new NotImplementedException();
         }

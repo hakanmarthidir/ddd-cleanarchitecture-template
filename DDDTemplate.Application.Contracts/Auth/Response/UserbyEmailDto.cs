@@ -2,7 +2,7 @@
 
 namespace DDDTemplate.Application.Contracts.Auth.Response
 {
-    public class UserbyEmailResponse
+    public class UserbyEmailDto
     {
         public string Email { get; set; }
         public Guid Id { get; set; }
