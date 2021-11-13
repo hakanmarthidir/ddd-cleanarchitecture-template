@@ -10,13 +10,12 @@ namespace DDDTemplate.Persistence.Context.Relational.Uow
     {
         private readonly EFContext _context;
 
-        //private IUserRepository _userRepository { get; }
-
         public EFUnitOfWork(EFContext context)
         {
             _context = context;
         }
 
+        //private IUserRepository _userRepository { get; }
         //public IUserRepository UserRepository
         //{
         //    get { return _userRepository ?? new UserRepository(_context); }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using DDDTemplate.Core.Guard;
 
 namespace DDDTemplate.Infrastructure.Security.Hash
 {
@@ -9,8 +8,6 @@ namespace DDDTemplate.Infrastructure.Security.Hash
     {
         public string GetHashedString(string hashValue)
         {
-            GuardClauses.ArgumentNotNullOrWhitespace(hashValue, nameof(hashValue));
-
             string hashedValue = string.Empty;
 
             using (SHA512 sha512Hash = SHA512.Create())

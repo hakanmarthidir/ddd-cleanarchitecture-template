@@ -7,7 +7,7 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="User\" />
-    <Folder Include="User\Config\" />
+    <Folder Include="Mappers\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
@@ -23,6 +23,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
@@ -30,5 +33,6 @@
     <ProjectReference Include="..\DDDTemplate.Persistence\DDDTemplate.Persistence.csproj" />
     <ProjectReference Include="..\DDDTemplate.Application.Contracts\DDDTemplate.Application.Contracts.csproj" />
     <ProjectReference Include="..\DDDTemplate.Application.Abstraction\DDDTemplate.Application.Abstraction.csproj" />
+    <ProjectReference Include="..\DDDTemplate.Domain\DDDTemplate.Domain.csproj" />
   </ItemGroup>
 </Project>

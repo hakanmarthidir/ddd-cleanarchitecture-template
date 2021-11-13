@@ -3,7 +3,7 @@ using DDDTemplate.Domain.SeedWork;
 
 namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IMongoRepository<User>
     {
     }
 }

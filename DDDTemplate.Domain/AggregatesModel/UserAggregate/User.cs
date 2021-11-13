@@ -9,9 +9,6 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {
     public class User : IEntity, IAuditable, ISoftDelete
     {
-        //Open if you use MongoContext
-        //[BsonId]
-        //[BsonRepresentation(BsonType.ObjectId)]
         public virtual Guid Id { get; set; }
         public virtual DateTimeOffset? CreatedDate { get; set; }
         public virtual DateTimeOffset? ModifiedDate { get; set; }
@@ -28,6 +25,15 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
         public virtual string ActivationCode { get; set; }
         public virtual DateTimeOffset? ActivationDate { get; set; }
 
+
+        public virtual void SetCreationValues()
+        {
+            IsActivated = ActivationStatus.NotActivated;
+            Status = Status.Active;
+            CreatedDate = DateTimeOffset.UtcNow;
+            UserType = UserType.User;
+            ActivationCode = Guid.NewGuid().ToString();
+        }
 
         public virtual void SetDeletedDate()
         {

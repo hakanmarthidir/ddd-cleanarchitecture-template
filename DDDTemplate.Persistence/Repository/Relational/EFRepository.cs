@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DDDTemplate.Persistence.Repository.Relational
 {
-    public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
+    public class EFRepository<TEntity> : IEFRepository<TEntity> where TEntity : class, IEntity, new()
     {
         protected readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbset;
@@ -128,7 +128,6 @@ namespace DDDTemplate.Persistence.Repository.Relational
             }).ConfigureAwait(false);
         }
 
-
         public void UpdateEntry(TEntity entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
@@ -183,11 +182,11 @@ namespace DDDTemplate.Persistence.Repository.Relational
             await Task.Run(() => _dbset.Remove(entity)).ConfigureAwait(false);
         }
 
-
         public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
           => await this._dbset.FirstOrDefaultAsync(predicate).ConfigureAwait(false);
 
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
           => this._dbset.FirstOrDefault(predicate);
+
     }
 }

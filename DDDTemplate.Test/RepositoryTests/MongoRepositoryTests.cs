@@ -29,7 +29,7 @@ namespace DDDTemplate.Test.RepositoryTests
 
         //3.
         [TestMethod]
-        public void MongoRepository_Insert_ShouldBeTrue()
+        public async System.Threading.Tasks.Task MongoRepository_Insert_ShouldBeTrueAsync()
         {
             IConfiguration configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(mockAppSettings)
@@ -38,23 +38,29 @@ namespace DDDTemplate.Test.RepositoryTests
             var _context = new MongoContext(configuration);
             UserRepository _repository = new UserRepository(_context);
 
-            _repository.Insert(new Domain.AggregatesModel.UserAggregate.User()
+            await _repository.InsertAsync(new Domain.AggregatesModel.UserAggregate.User()
             {
                 FirstName = "xyz",
-                ModifiedDate = DateTime.UtcNow,
+                ModifiedDate = DateTimeOffset.UtcNow,
                 LastName = "def",
-                CreatedDate = DateTime.UtcNow,
+                CreatedDate = DateTimeOffset.UtcNow,
                 Email = "aaaa@abcd.com",
                 IsActivated = Domain.AggregatesModel.UserAggregate.Enums.ActivationStatus.NotActivated,
                 Status = Domain.SeedWork.Status.Active,
                 UserType = Domain.AggregatesModel.UserAggregate.Enums.UserType.User
-            });
+            }).ConfigureAwait(false);
 
             var users = _repository.Find(x => x.Email == "aaaa@abcd.com").ToList();
             Assert.IsTrue(users.Count > 0);
+
+
+            var userFirstOrDefault = await _repository.FirstOrDefaultAsync(x => x.Email == "aaaa@abcd.com").ConfigureAwait(false);
+            Assert.IsTrue(userFirstOrDefault != null);
+
+            var user = await _repository.FindByIdAsync(userFirstOrDefault.Id).ConfigureAwait(false);
+            Assert.IsTrue(user != null);
+
         }
-
-
         // 4. Called once after each test before the Dispose method
         [TestCleanup]
         public void TestCleanup()

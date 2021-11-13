@@ -12,6 +12,9 @@ using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DDDTemplate.Persistence.Context.Mongo;
+using DDDTemplate.Infrastructure.Security.Token;
+using DDDTemplate.Persistence.Context.Relational.Uow;
+using DDDTemplate.Persistence.Context.Mongo.ContextConfiguration;
 
 namespace DDDTemplate.Application.Extensions
 {
@@ -28,35 +31,31 @@ namespace DDDTemplate.Application.Extensions
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors());
 
+            services.AddScoped<IEFUnitOfWork, EFUnitOfWork>();
+
         }
 
         public static void AddMongoDatabaseContext(this IServiceCollection services)
         {
+            MongoDbPersistence.Configure();
             services.AddScoped<IMongoContext, MongoContext>();
         }
 
         public static void AddServices(this IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(Mappers.AutoMappings));
             services.AddScoped<IResponseService, ResponseService>();
             services.AddScoped<IMailGunApiService, MailGunApiService>();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            //add here new service registrations
+            services.AddScoped<ITokenService, TokenService>();
 
         }
 
         public static void AddRepositories(this IServiceCollection services)
         {
-
             services.AddScoped<IUserRepository, UserRepository>();
-
-            //Use For Mongo
-            //services.AddScoped(typeof(IRepository<>), typeof(MongoRepository<>));
-
-            //Use For EF Core
-            //services.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
-            //services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
     }
 }

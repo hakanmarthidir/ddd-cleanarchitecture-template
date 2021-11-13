@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DDDTemplate.Api.Controllers.Base;
 using DDDTemplate.Application.Abstraction.Authentication;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using Microsoft.AspNetCore.Authorization;
@@ -11,8 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DDDTemplate.Api.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
-    public class AuthController : Controller
+    public class AuthController : BaseController
     {
         private readonly IAuthenticationService _authenticationService;
 
@@ -29,17 +31,27 @@ namespace DDDTemplate.Api.Controllers
         //    return new string[] { "value1", "value2" };
         //}
 
-        //// GET api/values/5
+        // GET api/values/5
         //[HttpGet("{id}")]
         //public string Get(int id)
         //{
         //    return "value";
         //}
 
-        // POST api/values
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] UserRegisterDto model)
+        [Route("[action]")]
+        public async Task<IActionResult> SignIn([FromBody] UserLoginDto model)
+        {
+            var response = await this._authenticationService.SignInAsync(model);
+            return Ok(response);
+        }
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> SignUp([FromBody] UserRegisterDto model)
         {
 
             var response = await this._authenticationService.SignUpAsync(model);

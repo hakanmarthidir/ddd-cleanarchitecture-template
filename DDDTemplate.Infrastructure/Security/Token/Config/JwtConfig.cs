@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DDDTemplate.Application.User.Config
+namespace DDDTemplate.Infrastructure.Security.Token.Config
 {
     public class JwtConfig
     {

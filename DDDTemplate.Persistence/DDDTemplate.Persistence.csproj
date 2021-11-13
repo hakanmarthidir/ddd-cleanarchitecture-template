@@ -18,6 +18,7 @@
     <Folder Include="Context\Relational\ContextConfiguration\" />
     <Folder Include="Repository\User\" />
     <Folder Include="Context\Relational\Uow\" />
+    <Folder Include="Context\Mongo\ContextConfiguration\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.13.2" />

@@ -11,7 +11,7 @@ using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Repository.Mongo
 {
-    public class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity, new()
+    public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity : class, IEntity, new()
     {
         private readonly IMongoContext _dbContext;
         private IMongoCollection<TEntity> _collection;
@@ -22,16 +22,7 @@ namespace DDDTemplate.Persistence.Repository.Mongo
             this._collection = _dbContext.Database.GetCollection<TEntity>(typeof(TEntity).Name);
         }
 
-        public void Delete(Guid id)
-        {
-            this._collection.DeleteOne<TEntity>(x => x.Id == id);
-        }
-
-        public async Task DeleteAsync(Guid id, CancellationToken token = default)
-        {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
-            await this._collection.DeleteOneAsync(filter).ConfigureAwait(false);
-        }
+        #region Read
 
         public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int? page = null, int? pageSize = null)
         {
@@ -101,41 +92,46 @@ namespace DDDTemplate.Persistence.Repository.Mongo
             return await cursor.FirstOrDefaultAsync().ConfigureAwait(false);
         }
 
-        public void Insert(TEntity entity)
-        {
-            this._collection.InsertOne(entity);
-        }
+        #endregion
 
-        public void InsertAll(IEnumerable<TEntity> entities)
-        {
-            this._collection.InsertMany(entities);
-        }
+        #region Write
 
         public async Task InsertAllAsync(IEnumerable<TEntity> entities, CancellationToken token = default)
         {
-            await this._collection.InsertManyAsync(entities).ConfigureAwait(false);
+            await this._collection.InsertManyAsync(entities, cancellationToken: token).ConfigureAwait(false);
         }
 
         public async Task InsertAsync(TEntity entity, CancellationToken token = default)
         {
-            await this._collection.InsertOneAsync(entity).ConfigureAwait(false);
-        }
-
-        public void Update(TEntity entity)
-        {
-            var filter = Builders<TEntity>.Filter.Eq(x => x.Id, entity.Id);
-            _collection.FindOneAndReplace(filter, entity);
-        }
-
-        public void UpdateEntry(TEntity entity)
-        {
-            this.Update(entity);
+            await this._collection.InsertOneAsync(entity, cancellationToken: token).ConfigureAwait(false);
         }
 
         public async Task UpdateAsync(TEntity entity, CancellationToken token = default)
         {
             var filter = Builders<TEntity>.Filter.Eq(x => x.Id, entity.Id);
-            await _collection.FindOneAndReplaceAsync(filter, entity).ConfigureAwait(false);
+            await this._collection.FindOneAndReplaceAsync(filter, entity, cancellationToken: token).ConfigureAwait(false);
         }
+
+        public async Task DeleteAsync(Guid id, CancellationToken token = default)
+        {
+            var deletedItem = await this.FindByIdAsync(id, token);
+
+            if (deletedItem != null)
+            {
+                if (deletedItem is ISoftDelete e)
+                {
+                    e.Status = Status.Deleted;
+                    e.DeletedDate = DateTimeOffset.UtcNow;
+                    await this.UpdateAsync(deletedItem, token);
+                }
+                else
+                {
+                    var filter = Builders<TEntity>.Filter.Eq(x => x.Id, id);
+                    await this._collection.DeleteOneAsync(filter, token).ConfigureAwait(false);
+                }
+            }
+        }
+
+        #endregion
     }
 }

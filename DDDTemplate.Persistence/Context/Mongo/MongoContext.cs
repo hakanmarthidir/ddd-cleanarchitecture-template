@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Context.Mongo
 {
     public class MongoContext : IMongoContext
     {
-
         public MongoContext(IConfiguration configuration)
         {
             var mongoConnectionString = configuration.GetConnectionString("MongoConnection");
@@ -22,5 +22,9 @@ namespace DDDTemplate.Persistence.Context.Mongo
         }
         public IMongoDatabase Database { get; set; }
 
+        public void Dispose()
+        {
+            GC.SuppressFinalize(this);
+        }
     }
 }

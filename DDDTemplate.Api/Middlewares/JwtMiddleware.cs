@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DDDTemplate.Application.Abstraction.Authentication;
-using DDDTemplate.Application.User.Config;
+using DDDTemplate.Infrastructure.Security.Token.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
