@@ -1,11 +1,9 @@
 ﻿using System;
-using DDDTemplate.Application.Abstraction.Profile;
 using DDDTemplate.Application.User;
 using DDDTemplate.Infrastructure.Notification.Email;
 using DDDTemplate.Infrastructure.Response;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.Extensions.DependencyInjection;
-using DDDTemplate.Application.Abstraction.Authentication;
 using DDDTemplate.Persistence.Repository.User;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 using DDDTemplate.Persistence.Context.Relational;
@@ -15,12 +13,12 @@ using DDDTemplate.Persistence.Context.Mongo;
 using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Persistence.Context.Relational.Uow;
 using DDDTemplate.Persistence.Context.Mongo.ContextConfiguration;
+using DDDTemplate.Application.Abstraction.User;
 
 namespace DDDTemplate.Application.Extensions
 {
     public static class ServiceCollectionExtension
     {
-
         public static void AddMySqlDatabaseContext(this IServiceCollection services, IConfiguration configuration)
         {
             var serverVersion = new MariaDbServerVersion(new Version(10, 5, 8));
@@ -32,7 +30,6 @@ namespace DDDTemplate.Application.Extensions
                 .EnableDetailedErrors());
 
             services.AddScoped<IEFUnitOfWork, EFUnitOfWork>();
-
         }
 
         public static void AddMongoDatabaseContext(this IServiceCollection services)

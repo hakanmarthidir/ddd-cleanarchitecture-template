@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DDDTemplate.Domain.SeedWork
+namespace DDDTemplate.Domain.Interfaces
 {
     public interface IEntity
     {

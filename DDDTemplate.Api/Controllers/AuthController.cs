@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DDDTemplate.Api.Controllers.Base;
-using DDDTemplate.Application.Abstraction.Authentication;
+using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

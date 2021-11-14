@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DDDTemplate.Domain.Enums;
 using DDDTemplate.Persistence.Context.Mongo;
 using DDDTemplate.Persistence.Repository.User;
 using Microsoft.Extensions.Configuration;
@@ -46,7 +47,7 @@ namespace DDDTemplate.Test.RepositoryTests
                 CreatedDate = DateTimeOffset.UtcNow,
                 Email = "aaaa@abcd.com",
                 IsActivated = Domain.AggregatesModel.UserAggregate.Enums.ActivationStatus.NotActivated,
-                Status = Domain.SeedWork.Status.Active,
+                Status = Status.Active,
                 UserType = Domain.AggregatesModel.UserAggregate.Enums.UserType.User
             }).ConfigureAwait(false);
 

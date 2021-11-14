@@ -4,7 +4,7 @@ using DDDTemplate.Application.Contracts.Profile.Request;
 using DDDTemplate.Application.Contracts.Profile.Response;
 using DDDTemplate.Infrastructure.Response.Base;
 
-namespace DDDTemplate.Application.Abstraction.Profile
+namespace DDDTemplate.Application.Abstraction.User
 {
     public interface IProfileService
     {

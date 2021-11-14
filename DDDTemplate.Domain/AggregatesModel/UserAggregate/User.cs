@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
-using DDDTemplate.Domain.SeedWork;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+using DDDTemplate.Domain.Enums;
+using DDDTemplate.Domain.Interfaces;
 
 namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {

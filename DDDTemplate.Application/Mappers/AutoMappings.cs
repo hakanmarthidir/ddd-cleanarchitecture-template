@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using DDDTemplate.Application.Contracts.Auth.Response;
 
 namespace DDDTemplate.Application.Mappers
@@ -8,12 +7,9 @@ namespace DDDTemplate.Application.Mappers
     {
         public AutoMappings()
         {
-
             // FROM Domain -> TO Dto
             CreateMap<Domain.AggregatesModel.UserAggregate.User, JwtMiddlewareDto>();
             CreateMap<Domain.AggregatesModel.UserAggregate.User, UserLoggedinDto>();
-
-
         }
     }
 }

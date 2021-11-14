@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DDDTemplate.Application.Abstraction.Profile;
+using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Application.Contracts.Profile.Request;
 using DDDTemplate.Application.Contracts.Profile.Response;
 using DDDTemplate.Infrastructure.Response.Base;

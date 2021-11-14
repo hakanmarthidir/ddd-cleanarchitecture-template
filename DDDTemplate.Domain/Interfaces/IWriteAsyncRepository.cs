@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDDTemplate.Domain.SeedWork
+namespace DDDTemplate.Domain.Interfaces
 {
     public interface IWriteAsyncRepository<TEntity> where TEntity : class, IEntity
     {

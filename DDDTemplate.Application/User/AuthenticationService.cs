@@ -3,15 +3,15 @@ using System.Threading.Tasks;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using DDDTemplate.Application.Contracts.Auth.Response;
 using DDDTemplate.Infrastructure.Response.Base;
-using DDDTemplate.Application.Abstraction.Authentication;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 using DDDTemplate.Infrastructure.Response;
 using DDDTemplate.Core.Guard;
 using AutoMapper;
 using Ardalis.GuardClauses;
-using System.Linq;
 using DDDTemplate.Infrastructure.Security.Hash;
 using DDDTemplate.Infrastructure.Security.Token;
+using DDDTemplate.Application.Abstraction.User;
+using DDDTemplate.Domain.Enums;
 
 namespace DDDTemplate.Application.User
 {
@@ -59,7 +59,7 @@ namespace DDDTemplate.Application.User
 
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
         {
-            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email && x.Status == Domain.SeedWork.Status.Active).ConfigureAwait(false);
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
             //TODO : count attempts
@@ -81,7 +81,7 @@ namespace DDDTemplate.Application.User
 
         public async Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto)
         {
-            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id && x.Status == Domain.SeedWork.Status.Active).ConfigureAwait(false);
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
             var mappedUser = this._mapper.Map<JwtMiddlewareDto>(user);
@@ -101,7 +101,7 @@ namespace DDDTemplate.Application.User
             throw new NotImplementedException();
         }
 
-        public Task<IServiceResponse<IsTokenValidDto>> ValidateTokenAsync(UserTokenDto userTokenDto)
+        public Task<IServiceResponse<TokenValidationDto>> ValidateTokenAsync(UserTokenDto userTokenDto)
         {
             throw new NotImplementedException();
         }

@@ -2,7 +2,7 @@
 
 namespace DDDTemplate.Application.Contracts.Auth.Response
 {
-    public class IsTokenValidDto
+    public class TokenValidationDto
     {
         public virtual bool IsValid { get; set; }
     }

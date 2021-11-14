@@ -1,7 +1,8 @@
 ﻿using System;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
-using DDDTemplate.Domain.SeedWork;
+using DDDTemplate.Domain.Enums;
+using DDDTemplate.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

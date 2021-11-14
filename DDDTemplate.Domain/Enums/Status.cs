@@ -1,4 +1,4 @@
-﻿namespace DDDTemplate.Domain.SeedWork
+﻿namespace DDDTemplate.Domain.Enums
 {
     public enum Status : byte
     {

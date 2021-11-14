@@ -1,5 +1,5 @@
 ﻿using System;
-using DDDTemplate.Domain.SeedWork;
+using DDDTemplate.Domain.Interfaces;
 
 namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {

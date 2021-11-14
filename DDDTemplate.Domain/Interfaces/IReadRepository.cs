@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DDDTemplate.Domain.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDDTemplate.Domain.SeedWork
+namespace DDDTemplate.Domain.Interfaces
 {
     public interface IReadRepository<TEntity> where TEntity : class, IEntity
     {

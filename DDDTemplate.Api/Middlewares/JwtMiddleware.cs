@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DDDTemplate.Application.Abstraction.Authentication;
+using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Infrastructure.Security.Token.Config;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

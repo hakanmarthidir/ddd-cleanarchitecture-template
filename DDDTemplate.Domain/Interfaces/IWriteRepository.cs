@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DDDTemplate.Domain.SeedWork
+namespace DDDTemplate.Domain.Interfaces
 {
     public interface IWriteRepository<TEntity> where TEntity : class, IEntity
     {

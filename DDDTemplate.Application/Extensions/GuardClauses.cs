@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.IO;
 using Ardalis.GuardClauses;
 using System.Linq;
 using System.Collections.Generic;
@@ -14,14 +12,12 @@ namespace DDDTemplate.Core.Guard
         {
             if (collection.Any())
                 throw new ArgumentException(message);
-
         }
 
         public static void AlreadyExist<T>(this IGuardClause guardClause, T input, string message)
         {
             if (input != null)
                 throw new ArgumentException(message);
-
         }
     }
 }
