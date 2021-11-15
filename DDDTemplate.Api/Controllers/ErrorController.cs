@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,10 +19,11 @@ namespace DDDTemplate.Api.Controllers
     public class ErrorController : BaseController
     {
         private readonly IResponseService _responseService;
-
-        public ErrorController(IResponseService responseService)
+        private readonly ILogger<ErrorController> _logger;
+        public ErrorController(IResponseService responseService, ILogger<ErrorController> logger)
         {
             this._responseService = responseService;
+            this._logger = logger;
         }
 
         [AllowAnonymous]
@@ -51,6 +53,8 @@ namespace DDDTemplate.Api.Controllers
             var exception = context.Error;
             var statusCode = 500;
             var errorCode = ErrorCodes.UNKNOWN_ERROR;
+
+            this._logger.LogError(exception, "An unknown error occurred..");
 
             if (exception is ArgumentNullException) { statusCode = 400; errorCode = ErrorCodes.NULL_ARGUMENT; }
             if (exception is ArgumentException) { statusCode = 400; errorCode = ErrorCodes.INVALID_REQUEST; }

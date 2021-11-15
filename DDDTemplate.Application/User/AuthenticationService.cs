@@ -12,6 +12,7 @@ using DDDTemplate.Infrastructure.Security.Hash;
 using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Domain.Enums;
+using Microsoft.Extensions.Logging;
 
 namespace DDDTemplate.Application.User
 {
@@ -22,20 +23,24 @@ namespace DDDTemplate.Application.User
         private readonly IMapper _mapper;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
+        private readonly ILogger<AuthenticationService> _logger;
 
-        public AuthenticationService(IUserRepository userRepository, IResponseService responseService, IMapper mapper, IHashService hashService, ITokenService tokenService)
+        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository, IResponseService responseService, IMapper mapper, IHashService hashService, ITokenService tokenService)
         {
             this._userRepository = userRepository;
             this._responseService = responseService;
             this._mapper = mapper;
             this._hashService = hashService;
             this._tokenService = tokenService;
+            this._logger = logger;
         }
 
         public async Task<IServiceResponse> SignUpAsync(UserRegisterDto userRegisterDto)
         {
+            this._logger.LogInformation($"{userRegisterDto.Email} - Signing Up : ");
+
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userRegisterDto.Email).ConfigureAwait(false);
-            Guard.Against.AlreadyExist(user, "Email address already exists for another account");
+            Guard.Against.AlreadyExist(user, $"{userRegisterDto.Email} - Email address already exists.");
 
             var hashedPassword = this._hashService.GetHashedString(userRegisterDto.Password);
             Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(userRegisterDto.Password), "Hashing problem occured.");
@@ -54,6 +59,7 @@ namespace DDDTemplate.Application.User
             await this._userRepository.InsertAsync(newUser).ConfigureAwait(false);
             //TODO: Send Activation Email here using classic way or queue.
 
+            this._logger.LogInformation($"{userRegisterDto.Email} - Account was created successfully.");
             return this._responseService.SuccessfulResponse("User created successfully");
         }
 
