@@ -7,6 +7,6 @@ namespace DDDTemplate.Infrastructure.Security.Token
     {
         string GenerateToken(Guid Id);
         bool ValidateCurrentToken(string token);
-
+        Guid? GetUserIdByToken(string token);
     }
 }

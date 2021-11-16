@@ -17,7 +17,8 @@ namespace DDDTemplate.Application.Contracts.Auth.Validations
 
             RuleFor(x => x.PasswordConfirm)
                  .NotEmpty().WithMessage("The PasswordConfirm cannot be blank.")
-                 .Length(0, 255).WithMessage("The PasswordConfirm cannot be more than 255 characters.");
+                 .Length(0, 255).WithMessage("The PasswordConfirm cannot be more than 255 characters.")
+                 .Equal(t => t.Password).WithMessage("Passwords are not same.");
 
         }
 

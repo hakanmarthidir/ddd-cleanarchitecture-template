@@ -11,9 +11,9 @@ namespace DDDTemplate.Application.Abstraction.User
         Task<IServiceResponse> SignUpAsync(UserRegisterDto userDto);
         Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto);
         Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto);
-        Task<IServiceResponse<TokenValidationDto>> ValidateTokenAsync(UserTokenDto userTokenDto);
+        IServiceResponse<TokenValidationDto> ValidateToken(UserTokenDto userTokenDto);
         Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
-        Task<IServiceResponse> SendActivationEmailAsync(UserIdDto userIdDto);
+        Task<IServiceResponse> ReSendActivationEmailAsync(UserIdDto userIdDto);
     }
 }

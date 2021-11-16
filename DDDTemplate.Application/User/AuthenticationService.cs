@@ -13,6 +13,8 @@ using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Domain.Enums;
 using Microsoft.Extensions.Logging;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
+using DDDTemplate.Infrastructure.Response.Enums;
 
 namespace DDDTemplate.Application.User
 {
@@ -37,7 +39,7 @@ namespace DDDTemplate.Application.User
 
         public async Task<IServiceResponse> SignUpAsync(UserRegisterDto userRegisterDto)
         {
-            this._logger.LogInformation($"{userRegisterDto.Email} - Signing Up : ");
+            this._logger.LogInformation($"{userRegisterDto.Email} - Signing Up ");
 
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userRegisterDto.Email).ConfigureAwait(false);
             Guard.Against.AlreadyExist(user, $"{userRegisterDto.Email} - Email address already exists.");
@@ -65,6 +67,7 @@ namespace DDDTemplate.Application.User
 
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
         {
+            this._logger.LogInformation($"{userLoginDto.Email} - Loggining to system");
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
@@ -76,13 +79,26 @@ namespace DDDTemplate.Application.User
             Guard.Against.Null(jwtUser, nameof(jwtUser));
 
             jwtUser.Token = this._tokenService.GenerateToken(jwtUser.Id);
+            Guard.Against.NullOrWhiteSpace(jwtUser.Token, nameof(jwtUser.Token), "Token could not be generated.");
 
+            this._logger.LogInformation($"{userLoginDto.Email} - Logged in successfully.");
             return this._responseService.SuccessfulDataResponse(jwtUser);
         }
 
-        public Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
+        public async Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
-            throw new NotImplementedException();
+
+            this._logger.LogInformation($"{forgotPasswordDto.Email} - forgot password operation was started.");
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == forgotPasswordDto.Email && x.Status == Status.Active).ConfigureAwait(false);
+            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+
+            var token = this._tokenService.GenerateToken(user.Id);
+
+            //TODO: Send Email For Reset
+            //await this._emailService.SendForgotPasswordAsync(user.FirstName, passToken, user.Email).ConfigureAwait(false);
+
+            this._logger.LogInformation($"{forgotPasswordDto.Email} - created a forgot password request.");
+            return this._responseService.SuccessfulResponse();
         }
 
         public async Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto)
@@ -97,19 +113,58 @@ namespace DDDTemplate.Application.User
 
         }
 
-        public Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
+        public async Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
-            throw new NotImplementedException();
+            var newPassword = this._hashService.GetHashedString(resetPasswordDto.Password);
+            var userId = this._tokenService.GetUserIdByToken(resetPasswordDto.Token);
+            Guard.Against.NullOrEmpty(userId, nameof(userId), $"{resetPasswordDto.Token} - Invalid token.");
+
+            this._logger.LogInformation($"{userId} - password reset operation was started.");
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active).ConfigureAwait(false);
+            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+
+            user.SetPasswordAfterReset(newPassword);
+
+            await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
+
+            this._logger.LogInformation($"{userId} - password successfully updated.");
+            return this._responseService.SuccessfulResponse();
         }
 
-        public Task<IServiceResponse> SendActivationEmailAsync(UserIdDto userIdDto)
+        public async Task<IServiceResponse> ReSendActivationEmailAsync(UserIdDto userIdDto)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(userIdDto, nameof(userIdDto), "UserId cannot be found.");
+            Guard.Against.NullOrEmpty(userIdDto.Id, nameof(userIdDto.Id), "UserId cannot be null.");
+
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id).ConfigureAwait(false);
+            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+
+            if (user.IsActivated == ActivationStatus.Activated)
+            {
+                this._logger.LogInformation($"{userIdDto.Id} - already activated.");
+                return this._responseService.FailedResponse(ErrorCodes.INVALID_REQUEST, "User already activated.");
+            }
+            user.CreateActivationCode();
+            await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
+
+            //TODO : Send Activation Email to User
+            //await this._emailService.SendEmailAfterSignupAsync(user.Id.ToString(), user.Email, user.FirstName, user.LastName, user.ActivationCode);
+            this._logger.LogInformation($"{user.Email} - requested a new activation code.");
+
+            return this._responseService.SuccessfulResponse();
         }
 
-        public Task<IServiceResponse<TokenValidationDto>> ValidateTokenAsync(UserTokenDto userTokenDto)
+        public IServiceResponse<TokenValidationDto> ValidateToken(UserTokenDto userTokenDto)
         {
-            throw new NotImplementedException();
+            Guard.Against.Null(userTokenDto, "Validate token", "Token cannot be found.");
+            Guard.Against.NullOrWhiteSpace(userTokenDto.Token, nameof(userTokenDto.Token), "Token cannot be null.");
+
+            this._logger.LogInformation($"{userTokenDto.Token} - token validation operation was started.");
+            var isValid = this._tokenService.ValidateCurrentToken(userTokenDto.Token);
+            var response = new TokenValidationDto() { IsValid = isValid };
+
+            this._logger.LogInformation($"{userTokenDto.Token} validation result is  {isValid}");
+            return this._responseService.SuccessfulDataResponse<TokenValidationDto>(response);
         }
 
         private void ValidateJwtUser(JwtMiddlewareDto jwtMiddlewareDto)

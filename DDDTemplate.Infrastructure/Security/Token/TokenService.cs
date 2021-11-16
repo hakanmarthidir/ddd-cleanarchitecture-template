@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using DDDTemplate.Infrastructure.Security.Token.Config;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,9 +13,12 @@ namespace DDDTemplate.Infrastructure.Security.Token
     public class TokenService : ITokenService
     {
         private readonly JwtConfig _jwtConfig;
-        public TokenService(IOptionsMonitor<JwtConfig> jwtConfig)
+        private readonly ILogger<TokenService> _logger;
+
+        public TokenService(IOptionsMonitor<JwtConfig> jwtConfig, ILogger<TokenService> logger)
         {
             this._jwtConfig = jwtConfig.CurrentValue;
+            this._logger = logger;
         }
 
         public string GenerateToken(Guid userId)
@@ -35,37 +40,55 @@ namespace DDDTemplate.Infrastructure.Security.Token
             return tokenHandler.WriteToken(token);
         }
 
-        public bool ValidateCurrentToken(string token)
+
+        private JwtSecurityToken GetToken(string token)
         {
-            var mySecret = _jwtConfig.Secret;
-            var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
-
-            var myIssuer = this._jwtConfig.Issuer;
-            var myAudience = this._jwtConfig.Audience;
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-
             try
             {
+                var mySecret = _jwtConfig.Secret;
+                var mySecurityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(mySecret));
+                var myIssuer = this._jwtConfig.Issuer;
+                var myAudience = this._jwtConfig.Audience;
+                var tokenHandler = new JwtSecurityTokenHandler();
+
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = mySecurityKey,
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidIssuer = myIssuer,
                     ValidAudience = myAudience,
-                    IssuerSigningKey = mySecurityKey,
+                    // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = TimeSpan.Zero
                 }, out SecurityToken validatedToken);
 
-                return validatedToken != null;
-            }
-            catch
-            {
-                return false;
-            }
+                var jwtToken = (JwtSecurityToken)validatedToken;
 
+                return jwtToken;
+
+            }
+            catch (Exception ex)
+            {
+                this._logger.LogError(ex, $"{token} - Validate token error occured.");
+                throw;
+            }
+        }
+
+
+        public bool ValidateCurrentToken(string token)
+        {
+            var validatedToken = this.GetToken(token);
+            return validatedToken != null;
+        }
+
+        public Guid? GetUserIdByToken(string token)
+        {
+            var validatedToken = this.GetToken(token);
+            var jwtToken = (JwtSecurityToken)validatedToken;
+            var userId = Guid.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            return userId;
         }
     }
 }
