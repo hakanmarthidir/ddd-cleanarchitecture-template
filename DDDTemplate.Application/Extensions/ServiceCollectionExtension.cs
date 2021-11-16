@@ -14,6 +14,7 @@ using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Persistence.Context.Relational.Uow;
 using DDDTemplate.Persistence.Context.Mongo.ContextConfiguration;
 using DDDTemplate.Application.Abstraction.User;
+using DDDTemplate.Infrastructure.Notification.Template;
 
 namespace DDDTemplate.Application.Extensions
 {
@@ -47,7 +48,7 @@ namespace DDDTemplate.Application.Extensions
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenService, TokenService>();
-
+            services.AddScoped<ITemplateService, TemplateService>();
         }
 
         public static void AddRepositories(this IServiceCollection services)

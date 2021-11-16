@@ -24,6 +24,8 @@
     <Folder Include="Attributes\" />
     <Folder Include="Controllers\Base\" />
     <Folder Include="ActionFilters\" />
+    <Folder Include="Shared\" />
+    <Folder Include="Shared\Template\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DDDTemplate.Application.Abstraction\DDDTemplate.Application.Abstraction.csproj">
