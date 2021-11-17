@@ -93,5 +93,17 @@ namespace DDDTemplate.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpPatch]
+        [Route("[action]")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IServiceResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Activate([FromBody] UserActivationDto userActivationDto)
+        {
+            var result = await this._authenticationService.ActivateAsync(userActivationDto);
+
+            return Ok(result);
+        }
     }
 }

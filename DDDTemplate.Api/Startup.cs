@@ -33,6 +33,7 @@ namespace DDDTemplate.Api
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
             services.Configure<MailGunConfig>(Configuration.GetSection("EmailConfig"));
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
+            services.Configure<TemplateConfig>(Configuration.GetSection("TemplateConfig"));
 
             //Choose Database Context
             //--------Context 1- MySql MariaDb-------------

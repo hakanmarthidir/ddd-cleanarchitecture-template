@@ -180,6 +180,20 @@ namespace DDDTemplate.Application.User
             return this._responseService.SuccessfulDataResponse<TokenValidationDto>(response);
         }
 
+        public async Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto)
+        {
+            this._logger.LogInformation($"{userActivationDto.UserId} - activation operation was started.");
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId && x.ActivationCode == userActivationDto.ActivationCode && x.IsActivated == ActivationStatus.NotActivated).ConfigureAwait(false);
+            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+
+            user.ActivateUser();
+
+            await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
+            this._logger.LogInformation($"{userActivationDto.UserId} - successfully activated.");
+
+            return this._responseService.SuccessfulResponse();
+        }
+
         private void ValidateJwtUser(JwtMiddlewareDto jwtMiddlewareDto)
         {
             Guard.Against.Null(jwtMiddlewareDto, nameof(jwtMiddlewareDto));

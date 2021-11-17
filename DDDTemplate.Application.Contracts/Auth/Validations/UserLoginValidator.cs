@@ -20,5 +20,4 @@ namespace DDDTemplate.Application.Contracts.Auth.Validations
         }
 
     }
-
 }

@@ -15,5 +15,6 @@ namespace DDDTemplate.Application.Abstraction.User
         Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto);
         Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
         Task<IServiceResponse> ReSendActivationEmailAsync(UserIdDto userIdDto);
+        Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto);
     }
 }
