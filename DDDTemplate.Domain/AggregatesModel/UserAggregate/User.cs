@@ -24,16 +24,6 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
         public virtual string ActivationCode { get; set; }
         public virtual DateTimeOffset? ActivationDate { get; set; }
 
-
-        public virtual void SetCreationValues()
-        {
-            IsActivated = ActivationStatus.NotActivated;
-            Status = Status.Active;
-            CreatedDate = DateTimeOffset.UtcNow;
-            UserType = UserType.User;
-            ActivationCode = Guid.NewGuid().ToString();
-        }
-
         public virtual void SetDeletedDate()
         {
             this.DeletedDate = DateTimeOffset.UtcNow;
@@ -59,6 +49,25 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
         public virtual void SetPasswordAfterReset(string newPassword)
         {
             this.Password = newPassword;
+        }
+
+        public static User CreateUser(string firstName, string lastName, string email, string hashedPassword)
+        {
+            var newuser = new User()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                Password = hashedPassword,
+                IsActivated = ActivationStatus.NotActivated,
+                Status = Status.Active,
+                CreatedDate = DateTimeOffset.UtcNow,
+                UserType = UserType.User,
+                ActivationCode = Guid.NewGuid().ToString()
+            };
+
+            return newuser;
+
         }
 
     }

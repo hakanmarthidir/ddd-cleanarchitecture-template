@@ -62,16 +62,13 @@ namespace DDDTemplate.Application.User
             var hashedPassword = this._hashService.GetHashedString(userRegisterDto.Password);
             Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(userRegisterDto.Password), "Hashing problem occured.");
 
-            var newUser = new Domain.AggregatesModel.UserAggregate.User()
-            {
-                FirstName = userRegisterDto.FirstName,
-                LastName = userRegisterDto.LastName,
-                Email = userRegisterDto.Email,
-                Password = hashedPassword
-            };
-
-            newUser.SetCreationValues();
-            newUser.CreateActivationCode();
+            var newUser = Domain.AggregatesModel.UserAggregate.User.CreateUser
+            (
+                userRegisterDto.FirstName,
+                userRegisterDto.LastName,
+                userRegisterDto.Email,
+                hashedPassword
+            );
 
             await this._userRepository.InsertAsync(newUser).ConfigureAwait(false);
 
