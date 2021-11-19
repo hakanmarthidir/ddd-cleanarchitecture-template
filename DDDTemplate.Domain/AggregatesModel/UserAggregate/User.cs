@@ -70,5 +70,10 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 
         }
 
+        public virtual bool CanActivate(string activationCode)
+        {
+            return this.ActivationCode == activationCode && this.IsActivated == ActivationStatus.NotActivated;
+        }
+
     }
 }

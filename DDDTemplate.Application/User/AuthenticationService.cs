@@ -183,8 +183,13 @@ namespace DDDTemplate.Application.User
         public async Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto)
         {
             this._logger.LogInformation($"{userActivationDto.UserId} - activation operation was started.");
-            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId && x.ActivationCode == userActivationDto.ActivationCode && x.IsActivated == ActivationStatus.NotActivated).ConfigureAwait(false);
-            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+
+            var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId
+                                                                      && x.Status == Status.Active).ConfigureAwait(false);
+            Guard.Against.Null(user, nameof(user), "User cannot be found to activate.");
+
+            var canActivate = user.CanActivate(userActivationDto.ActivationCode);
+            Guard.Against.IsFalse(canActivate, "User cannot be activated.");
 
             user.ActivateUser();
 

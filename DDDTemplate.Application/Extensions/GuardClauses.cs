@@ -19,5 +19,11 @@ namespace DDDTemplate.Core.Guard
             if (input != null)
                 throw new ArgumentException(message);
         }
+
+        public static void IsFalse(this IGuardClause guardClause, bool input, string message)
+        {
+            if (input == false)
+                throw new ArgumentException(message);
+        }
     }
 }
