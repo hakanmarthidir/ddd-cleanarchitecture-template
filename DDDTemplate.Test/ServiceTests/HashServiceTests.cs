@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -18,29 +19,29 @@ namespace DDDTemplate.Test.ServiceTests
 
 
         [TestMethod]
-        public void HashString_Creation_Test()
+        public async System.Threading.Tasks.Task HashString_Creation_TestAsync()
         {
             string source = "hello";
-            var hashed = this.hashService.GetHashedString(source);
+            var hashed = await this.hashService.GetHashedStringAsync(source).ConfigureAwait(false);
             Assert.IsNotNull(hashed);
         }
 
         [TestMethod]
-        public void HashString_Verify_Test()
+        public async System.Threading.Tasks.Task HashString_Verify_TestAsync()
         {
             string source = "hello";
-            var hashed = this.hashService.GetHashedString(source);
-            var isVerified = this.hashService.VerifyHashes(source, hashed);
+            var hashed = await this.hashService.GetHashedStringAsync(source).ConfigureAwait(false);
+            var isVerified = await this.hashService.VerifyHashesAsync(source, hashed).ConfigureAwait(false);
             Assert.IsTrue(isVerified);
         }
 
         [TestMethod]
-        public void HashString_Creation_Exception_Test()
+        public async System.Threading.Tasks.Task HashString_Creation_Exception_TestAsync()
         {
-            Assert.ThrowsException<ArgumentNullException>(() =>
+            await Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
             {
-                return this.hashService.GetHashedString("");
-            });
+                await this.hashService.GetHashedStringAsync("").ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
     }

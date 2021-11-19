@@ -59,7 +59,7 @@ namespace DDDTemplate.Application.User
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userRegisterDto.Email).ConfigureAwait(false);
             Guard.Against.AlreadyExist(user, $"{userRegisterDto.Email} - Email address already exists.");
 
-            var hashedPassword = this._hashService.GetHashedString(userRegisterDto.Password);
+            var hashedPassword = await this._hashService.GetHashedStringAsync(userRegisterDto.Password).ConfigureAwait(false);
             Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(userRegisterDto.Password), "Hashing problem occured.");
 
             var newUser = Domain.AggregatesModel.UserAggregate.User.CreateUser
@@ -86,8 +86,8 @@ namespace DDDTemplate.Application.User
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
             //TODO : count attempts
-            if (!this._hashService.VerifyHashes(userLoginDto.Password, user.Password))
-                throw new ArgumentException(message: $"Incorrect password.");
+            var isVerifiedHash = await this._hashService.VerifyHashesAsync(userLoginDto.Password, user.Password).ConfigureAwait(false);
+            Guard.Against.IsFalse(isVerifiedHash, $"Incorrect password.");
 
             var jwtUser = _mapper.Map<UserLoggedinDto>(user);
             Guard.Against.Null(jwtUser, nameof(jwtUser));
@@ -129,7 +129,9 @@ namespace DDDTemplate.Application.User
 
         public async Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
-            var newPassword = this._hashService.GetHashedString(resetPasswordDto.Password);
+            var newPassword = await this._hashService.GetHashedStringAsync(resetPasswordDto.Password).ConfigureAwait(false);
+            Guard.Against.NullOrEmpty(newPassword, nameof(newPassword), $"NewPassword could not be created.");
+
             var userId = this._tokenService.GetUserIdByToken(resetPasswordDto.Token);
             Guard.Against.NullOrEmpty(userId, nameof(userId), $"{resetPasswordDto.Token} - Invalid token.");
 
