@@ -2,6 +2,8 @@
 using Ardalis.GuardClauses;
 using System.Linq;
 using System.Collections.Generic;
+using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.Entities.UserAggregate.Exceptions;
 
 namespace DDDTemplate.Core.Guard
 {
@@ -24,6 +26,12 @@ namespace DDDTemplate.Core.Guard
         {
             if (input == false)
                 throw new ArgumentException(message);
+        }
+
+        public static void NullUser(this IGuardClause guardClause, Guid userId, User user, string functionName)
+        {
+            if (user == null)
+                throw new UserNotFoundException(userId, functionName);
         }
     }
 }

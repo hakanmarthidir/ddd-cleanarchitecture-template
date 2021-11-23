@@ -118,7 +118,7 @@ namespace DDDTemplate.Application.User
         public async Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto)
         {
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+            Guard.Against.NullUser(userIdDto.Id, user, "GetJwtUserbyIdAsync");
 
             var mappedUser = this._mapper.Map<JwtMiddlewareDto>(user);
             this.ValidateJwtUser(mappedUser);
@@ -137,7 +137,7 @@ namespace DDDTemplate.Application.User
 
             this._logger.LogInformation($"{userId} - password reset operation was started.");
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+            Guard.Against.NullUser(userId.Value, user, "ResetPasswordAsync");
 
             user.SetPasswordAfterReset(newPassword);
 
@@ -153,7 +153,7 @@ namespace DDDTemplate.Application.User
             Guard.Against.NullOrEmpty(userIdDto.Id, nameof(userIdDto.Id), "UserId cannot be null.");
 
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id).ConfigureAwait(false);
-            Guard.Against.Null(user, nameof(user), "User cannot be found.");
+            Guard.Against.NullUser(userIdDto.Id, user, "ReSendActivationEmailAsync");
 
             if (user.IsActivated == ActivationStatus.Activated)
             {
@@ -188,7 +188,7 @@ namespace DDDTemplate.Application.User
 
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId
                                                                       && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.Null(user, nameof(user), "User cannot be found to activate.");
+            Guard.Against.NullUser(userActivationDto.UserId.Value, user, "ActivateAsync");
 
             var canActivate = user.CanActivate(userActivationDto.ActivationCode);
             Guard.Against.IsFalse(canActivate, "User cannot be activated.");
