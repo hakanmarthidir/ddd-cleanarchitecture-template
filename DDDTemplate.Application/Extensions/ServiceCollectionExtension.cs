@@ -1,7 +1,6 @@
 ﻿using System;
 using DDDTemplate.Application.User;
 using DDDTemplate.Infrastructure.Notification.Email;
-using DDDTemplate.Infrastructure.Response;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.Extensions.DependencyInjection;
 using DDDTemplate.Persistence.Repository.User;
@@ -43,7 +42,6 @@ namespace DDDTemplate.Application.Extensions
         public static void AddServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Mappers.AutoMappings));
-            services.AddScoped<IResponseService, ResponseService>();
             services.AddScoped<IMailGunApiService, MailGunApiService>();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IProfileService, ProfileService>();

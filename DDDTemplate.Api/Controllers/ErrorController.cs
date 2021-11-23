@@ -1,8 +1,8 @@
 ﻿using System;
 using DDDTemplate.Api.Controllers.Base;
-using DDDTemplate.Infrastructure.Response;
-using DDDTemplate.Infrastructure.Response.Base;
-using DDDTemplate.Infrastructure.Response.Enums;
+using DDDTemplate.Application.Abstraction.Response;
+using DDDTemplate.Application.Abstraction.Response.Enums;
+using DDDTemplate.Application.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -18,11 +18,10 @@ namespace DDDTemplate.Api.Controllers
     [Route("api/[controller]")]
     public class ErrorController : BaseController
     {
-        private readonly IResponseService _responseService;
+
         private readonly ILogger<ErrorController> _logger;
-        public ErrorController(IResponseService responseService, ILogger<ErrorController> logger)
+        public ErrorController(ILogger<ErrorController> logger)
         {
-            this._responseService = responseService;
             this._logger = logger;
         }
 
@@ -60,7 +59,7 @@ namespace DDDTemplate.Api.Controllers
             if (exception is ArgumentException) { statusCode = 400; errorCode = ErrorCodes.INVALID_REQUEST; }
             else if (exception is ApplicationException) { statusCode = 400; errorCode = ErrorCodes.SERVICE_NOT_AVAILABLE; }
 
-            var serviceResult = this._responseService.FailedResponse(errorCode, exception.Message);
+            var serviceResult = ServiceResponse.Failure(errorCode, exception.Message);
 
             return StatusCode(statusCode, serviceResult);
         }

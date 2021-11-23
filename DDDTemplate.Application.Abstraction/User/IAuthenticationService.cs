@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using DDDTemplate.Application.Contracts.Auth.Response;
-using DDDTemplate.Infrastructure.Response.Base;
 
 namespace DDDTemplate.Application.Abstraction.User
 {

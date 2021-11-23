@@ -1,10 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using DDDTemplate.Application.Contracts.Auth.Response;
-using DDDTemplate.Infrastructure.Response.Base;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
-using DDDTemplate.Infrastructure.Response;
 using DDDTemplate.Core.Guard;
 using AutoMapper;
 using Ardalis.GuardClauses;
@@ -14,18 +11,20 @@ using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Domain.Enums;
 using Microsoft.Extensions.Logging;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
-using DDDTemplate.Infrastructure.Response.Enums;
 using DDDTemplate.Infrastructure.Notification.Template;
 using DDDTemplate.Infrastructure.Notification.Email;
 using DDDTemplate.Infrastructure.Notification.Config;
 using Microsoft.Extensions.Options;
+using DDDTemplate.Application.Abstraction.Response;
+using DDDTemplate.Application.Response;
+using DDDTemplate.Application.Abstraction.Response.Enums;
 
 namespace DDDTemplate.Application.User
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IResponseService _responseService;
+
         private readonly IMapper _mapper;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
@@ -34,7 +33,7 @@ namespace DDDTemplate.Application.User
         private readonly IMailGunApiService _mailGunService;
         private readonly TemplateConfig _templateConfig;
 
-        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository, IResponseService responseService, IMapper mapper,
+        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository, IMapper mapper,
             IHashService hashService,
             ITokenService tokenService,
             ITemplateService templateService,
@@ -42,7 +41,6 @@ namespace DDDTemplate.Application.User
             IOptionsMonitor<TemplateConfig> templateConfig)
         {
             this._userRepository = userRepository;
-            this._responseService = responseService;
             this._mapper = mapper;
             this._hashService = hashService;
             this._tokenService = tokenService;
@@ -76,7 +74,7 @@ namespace DDDTemplate.Application.User
             await this.SendActivationCodeEmailAsync(registeredUser, this._templateConfig.ActivationEmailTitle).ConfigureAwait(false);
 
             this._logger.LogInformation($"{userRegisterDto.Email} - Account was created successfully.");
-            return this._responseService.SuccessfulResponse("User created successfully");
+            return ServiceResponse.Success("User created successfully");
         }
 
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
@@ -96,7 +94,7 @@ namespace DDDTemplate.Application.User
             Guard.Against.NullOrWhiteSpace(jwtUser.Token, nameof(jwtUser.Token), "Token could not be generated.");
 
             this._logger.LogInformation($"{userLoginDto.Email} - Logged in successfully.");
-            return this._responseService.SuccessfulDataResponse(jwtUser);
+            return ServiceResponse<UserLoggedinDto>.Success(jwtUser);
         }
 
         public async Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
@@ -112,7 +110,7 @@ namespace DDDTemplate.Application.User
             await this._mailGunService.SendWithMailgunApiAsync(user.Email, _templateConfig.ForgotPasswordEmailTitle, forgotPasswordEmailBody).ConfigureAwait(false);
 
             this._logger.LogInformation($"{forgotPasswordDto.Email} - created a forgot password request.");
-            return this._responseService.SuccessfulResponse();
+            return ServiceResponse.Success();
         }
 
         public async Task<IServiceResponse<JwtMiddlewareDto>> GetJwtUserbyIdAsync(UserIdDto userIdDto)
@@ -123,7 +121,7 @@ namespace DDDTemplate.Application.User
             var mappedUser = this._mapper.Map<JwtMiddlewareDto>(user);
             this.ValidateJwtUser(mappedUser);
 
-            return this._responseService.SuccessfulDataResponse<JwtMiddlewareDto>(mappedUser);
+            return ServiceResponse<JwtMiddlewareDto>.Success(mappedUser);
 
         }
 
@@ -144,7 +142,7 @@ namespace DDDTemplate.Application.User
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
 
             this._logger.LogInformation($"{userId} - password successfully updated.");
-            return this._responseService.SuccessfulResponse();
+            return ServiceResponse.Success();
         }
 
         public async Task<IServiceResponse> ReSendActivationEmailAsync(UserIdDto userIdDto)
@@ -158,7 +156,7 @@ namespace DDDTemplate.Application.User
             if (user.IsActivated == ActivationStatus.Activated)
             {
                 this._logger.LogInformation($"{userIdDto.Id} - already activated.");
-                return this._responseService.FailedResponse(ErrorCodes.INVALID_REQUEST, "User already activated.");
+                return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
             }
             user.CreateActivationCode();
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
@@ -166,7 +164,7 @@ namespace DDDTemplate.Application.User
             await this.SendActivationCodeEmailAsync(user, this._templateConfig.ActivationEmailTitle).ConfigureAwait(false);
 
             this._logger.LogInformation($"{user.Email} - requested a new activation code.");
-            return this._responseService.SuccessfulResponse();
+            return ServiceResponse.Success();
         }
 
         public IServiceResponse<TokenValidationDto> ValidateToken(UserTokenDto userTokenDto)
@@ -179,7 +177,7 @@ namespace DDDTemplate.Application.User
             var response = new TokenValidationDto() { IsValid = isValid };
 
             this._logger.LogInformation($"{userTokenDto.Token} validation result is  {isValid}");
-            return this._responseService.SuccessfulDataResponse<TokenValidationDto>(response);
+            return ServiceResponse<TokenValidationDto>.Success(response);
         }
 
         public async Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto)
@@ -198,7 +196,7 @@ namespace DDDTemplate.Application.User
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
             this._logger.LogInformation($"{userActivationDto.UserId} - successfully activated.");
 
-            return this._responseService.SuccessfulResponse();
+            return ServiceResponse.Success();
         }
 
         private void ValidateJwtUser(JwtMiddlewareDto jwtMiddlewareDto)

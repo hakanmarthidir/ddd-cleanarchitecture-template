@@ -1,4 +1,4 @@
-﻿namespace DDDTemplate.Infrastructure.Response.Enums
+﻿namespace DDDTemplate.Application.Abstraction.Response.Enums
 {
     public enum ErrorCodes : byte
     {

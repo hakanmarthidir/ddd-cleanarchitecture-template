@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using DDDTemplate.Api.Controllers.Base;
+using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Application.Contracts.Auth.Request;
-using DDDTemplate.Infrastructure.Response.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
