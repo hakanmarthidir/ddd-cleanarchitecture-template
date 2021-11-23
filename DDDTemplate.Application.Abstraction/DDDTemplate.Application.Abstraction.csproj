@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
     <ProjectReference Include="..\DDDTemplate.Application.Contracts\DDDTemplate.Application.Contracts.csproj" />
     <ProjectReference Include="..\DDDTemplate.Infrastructure\DDDTemplate.Infrastructure.csproj" />
   </ItemGroup>

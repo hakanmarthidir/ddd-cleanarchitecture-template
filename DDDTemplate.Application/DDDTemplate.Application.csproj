@@ -28,7 +28,6 @@
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DDDTemplate.Core\DDDTemplate.Core.csproj" />
     <ProjectReference Include="..\DDDTemplate.Infrastructure\DDDTemplate.Infrastructure.csproj" />
     <ProjectReference Include="..\DDDTemplate.Persistence\DDDTemplate.Persistence.csproj" />
     <ProjectReference Include="..\DDDTemplate.Application.Contracts\DDDTemplate.Application.Contracts.csproj" />
