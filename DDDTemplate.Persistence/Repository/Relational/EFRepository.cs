@@ -6,12 +6,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDDTemplate.Domain.Enums;
 using DDDTemplate.Domain.Interfaces;
+using DDDTemplate.Domain.Shared;
 using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.EntityFrameworkCore;
 
 namespace DDDTemplate.Persistence.Repository.Relational
 {
-    public class EFRepository<TEntity> : IEFRepository<TEntity> where TEntity : class, IEntity, new()
+    public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, IAggregateRoot, new()
     {
         protected readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbset;
@@ -140,7 +141,7 @@ namespace DDDTemplate.Persistence.Repository.Relational
 
             if (deletedItem != null)
             {
-                if (deletedItem is ISoftDelete e)
+                if (deletedItem is ISoftDeletable e)
                 {
                     e.Status = Status.Deleted;
                     e.DeletedDate = DateTimeOffset.UtcNow;
@@ -160,7 +161,7 @@ namespace DDDTemplate.Persistence.Repository.Relational
 
             if (deletedItem != null)
             {
-                if (deletedItem is ISoftDelete e)
+                if (deletedItem is ISoftDeletable e)
                 {
                     e.Status = Status.Deleted;
                     e.DeletedDate = DateTimeOffset.UtcNow;

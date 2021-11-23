@@ -3,17 +3,12 @@ using System.Text.Json.Serialization;
 using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
 using DDDTemplate.Domain.Enums;
 using DDDTemplate.Domain.Interfaces;
+using DDDTemplate.Domain.Shared;
 
 namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
 {
-    public class User : IEntity, IAuditable, ISoftDelete
+    public class User : BaseEntity, IAggregateRoot, IAuditable, ISoftDeletable
     {
-        public virtual Guid Id { get; set; }
-        public virtual DateTimeOffset? CreatedDate { get; set; }
-        public virtual DateTimeOffset? ModifiedDate { get; set; }
-        public virtual Status Status { get; set; }
-        public virtual DateTimeOffset? DeletedDate { get; set; }
-
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
@@ -24,21 +19,31 @@ namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
         public virtual string ActivationCode { get; set; }
         public virtual DateTimeOffset? ActivationDate { get; set; }
 
-        public virtual void SetDeletedDate()
+        public virtual DateTimeOffset? CreatedDate { get; set; }
+        public virtual DateTimeOffset? ModifiedDate { get; set; }
+        public virtual string CreatedBy { get; set; }
+        public virtual string ModifiedBy { get; set; }
+        public virtual Status Status { get; set; }
+        public virtual DateTimeOffset? DeletedDate { get; set; }
+        public virtual string DeletedBy { get; set; }
+
+        public virtual void SetDeletedDate(string deletedBy)
         {
             this.DeletedDate = DateTimeOffset.UtcNow;
+            this.DeletedBy = deletedBy;
         }
 
-        public virtual void SetModifiedDate()
+        public virtual void SetModifiedDate(string modifiedBy)
         {
             this.ModifiedDate = DateTimeOffset.UtcNow;
+            this.ModifiedBy = modifiedBy;
         }
 
         public virtual void ActivateUser()
         {
             this.IsActivated = ActivationStatus.Activated;
             this.ActivationDate = DateTimeOffset.UtcNow;
-            SetModifiedDate();
+            SetModifiedDate(this.Id.ToString());
         }
 
         public virtual void CreateActivationCode()

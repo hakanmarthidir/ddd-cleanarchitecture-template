@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate;
-using DDDTemplate.Persistence.Repository.User;
+using DDDTemplate.Domain.Interfaces;
 
 namespace DDDTemplate.Persistence.Context.Relational.Uow
 {
-    public class EFUnitOfWork : IEFUnitOfWork
+    public class EFUnitOfWork : IUnitOfWork
     {
         private readonly EFContext _context;
 

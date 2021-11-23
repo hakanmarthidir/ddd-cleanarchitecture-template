@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DDDTemplate.Domain.Interfaces
 {
-    public interface IReadRepository<TEntity> where TEntity : class, IEntity
+    public interface IReadRepository<TEntity> where TEntity : class, IAggregateRoot
     {
         TEntity FindById(Guid id);
         Task<TEntity> FindByIdAsync(Guid id, CancellationToken token = default(CancellationToken));

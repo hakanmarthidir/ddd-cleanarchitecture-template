@@ -2,8 +2,8 @@
 
 namespace DDDTemplate.Domain.Interfaces
 {
-    public interface IEntity
+    public interface IAggregateRoot
     {
-        Guid Id { get; set; }
+
     }
 }

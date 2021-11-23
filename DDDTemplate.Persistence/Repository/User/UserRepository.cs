@@ -1,9 +1,8 @@
-﻿using System;
+﻿
+
 using DDDTemplate.Domain.AggregatesModel.UserAggregate;
 using DDDTemplate.Persistence.Context.Mongo;
-using DDDTemplate.Persistence.Context.Relational;
 using DDDTemplate.Persistence.Repository.Mongo;
-using DDDTemplate.Persistence.Repository.Relational;
 
 namespace DDDTemplate.Persistence.Repository.User
 {

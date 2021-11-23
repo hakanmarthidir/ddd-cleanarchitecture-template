@@ -6,13 +6,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using DDDTemplate.Domain.Enums;
 using DDDTemplate.Domain.Interfaces;
+using DDDTemplate.Domain.Shared;
 using DDDTemplate.Persistence.Context.Mongo;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
 namespace DDDTemplate.Persistence.Repository.Mongo
 {
-    public class MongoRepository<TEntity> : IMongoRepository<TEntity> where TEntity : class, IEntity, new()
+    public class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, IAggregateRoot, new()
     {
         private readonly IMongoContext _dbContext;
         private IMongoCollection<TEntity> _collection;
@@ -119,7 +120,7 @@ namespace DDDTemplate.Persistence.Repository.Mongo
 
             if (deletedItem != null)
             {
-                if (deletedItem is ISoftDelete e)
+                if (deletedItem is ISoftDeletable e)
                 {
                     e.Status = Status.Deleted;
                     e.DeletedDate = DateTimeOffset.UtcNow;
@@ -131,6 +132,26 @@ namespace DDDTemplate.Persistence.Repository.Mongo
                     await this._collection.DeleteOneAsync(filter, token).ConfigureAwait(false);
                 }
             }
+        }
+
+        public void Insert(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void InsertAll(IEnumerable<TEntity> entities)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Update(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Guid id)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

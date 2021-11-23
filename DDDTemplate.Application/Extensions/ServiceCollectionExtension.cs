@@ -15,6 +15,7 @@ using DDDTemplate.Persistence.Context.Relational.Uow;
 using DDDTemplate.Persistence.Context.Mongo.ContextConfiguration;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Infrastructure.Notification.Template;
+using DDDTemplate.Domain.Interfaces;
 
 namespace DDDTemplate.Application.Extensions
 {
@@ -30,7 +31,7 @@ namespace DDDTemplate.Application.Extensions
                 .EnableSensitiveDataLogging()
                 .EnableDetailedErrors());
 
-            services.AddScoped<IEFUnitOfWork, EFUnitOfWork>();
+            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
         }
 
         public static void AddMongoDatabaseContext(this IServiceCollection services)

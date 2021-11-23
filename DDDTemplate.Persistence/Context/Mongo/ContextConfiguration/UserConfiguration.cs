@@ -12,7 +12,7 @@ namespace DDDTemplate.Persistence.Context.Mongo.ContextConfiguration
             {
                 map.AutoMap();
                 map.SetIgnoreExtraElements(true);
-                map.MapIdMember(x => x.Id);
+                map.SetIdMember(map.GetMemberMap(c => c.Id));
                 map.MapMember(x => x.Email).SetIsRequired(true);
                 map.MapMember(x => x.FirstName).SetIsRequired(true);
                 map.MapMember(x => x.LastName).SetIsRequired(true);
