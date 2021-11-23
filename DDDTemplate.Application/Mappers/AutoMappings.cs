@@ -8,8 +8,8 @@ namespace DDDTemplate.Application.Mappers
         public AutoMappings()
         {
             // FROM Domain -> TO Dto
-            CreateMap<Domain.AggregatesModel.UserAggregate.User, JwtMiddlewareDto>();
-            CreateMap<Domain.AggregatesModel.UserAggregate.User, UserLoggedinDto>();
+            CreateMap<Domain.Entities.UserAggregate.User, JwtMiddlewareDto>();
+            CreateMap<Domain.Entities.UserAggregate.User, UserLoggedinDto>();
         }
     }
 }

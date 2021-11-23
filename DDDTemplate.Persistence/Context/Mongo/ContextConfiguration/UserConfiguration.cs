@@ -1,5 +1,5 @@
 ﻿using System;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.Entities.UserAggregate;
 using MongoDB.Bson.Serialization;
 
 namespace DDDTemplate.Persistence.Context.Mongo.ContextConfiguration

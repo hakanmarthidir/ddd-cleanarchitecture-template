@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using DDDTemplate.Application.Contracts.Auth.Request;
 using DDDTemplate.Application.Contracts.Auth.Response;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.Entities.UserAggregate;
 using DDDTemplate.Core.Guard;
 using AutoMapper;
 using Ardalis.GuardClauses;
@@ -10,7 +10,7 @@ using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Domain.Enums;
 using Microsoft.Extensions.Logging;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
+using DDDTemplate.Domain.Entities.UserAggregate.Enums;
 using DDDTemplate.Infrastructure.Notification.Template;
 using DDDTemplate.Infrastructure.Notification.Email;
 using DDDTemplate.Infrastructure.Notification.Config;
@@ -60,7 +60,7 @@ namespace DDDTemplate.Application.User
             var hashedPassword = await this._hashService.GetHashedStringAsync(userRegisterDto.Password).ConfigureAwait(false);
             Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(userRegisterDto.Password), "Hashing problem occured.");
 
-            var newUser = Domain.AggregatesModel.UserAggregate.User.CreateUser
+            var newUser = Domain.Entities.UserAggregate.User.CreateUser
             (
                 userRegisterDto.FirstName,
                 userRegisterDto.LastName,
@@ -208,7 +208,7 @@ namespace DDDTemplate.Application.User
             Guard.Against.NullOrEmpty(jwtMiddlewareDto.Id, nameof(jwtMiddlewareDto.Id));
         }
 
-        private async Task<Domain.AggregatesModel.UserAggregate.User> GetUserByEmail(string email)
+        private async Task<Domain.Entities.UserAggregate.User> GetUserByEmail(string email)
         {
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == email && x.Status == Status.Active).ConfigureAwait(false);
 
@@ -217,7 +217,7 @@ namespace DDDTemplate.Application.User
             return user;
         }
 
-        private async Task SendActivationCodeEmailAsync(Domain.AggregatesModel.UserAggregate.User registeredUser, string emailTitle)
+        private async Task SendActivationCodeEmailAsync(Domain.Entities.UserAggregate.User registeredUser, string emailTitle)
         {
             var activationEmailBody = await this._templateService.GetActivationTemplateAsync(
                 registeredUser.Id.ToString(),

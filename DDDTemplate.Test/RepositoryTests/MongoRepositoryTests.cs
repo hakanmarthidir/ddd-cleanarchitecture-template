@@ -39,16 +39,16 @@ namespace DDDTemplate.Test.RepositoryTests
             var _context = new MongoContext(configuration);
             UserRepository _repository = new UserRepository(_context);
 
-            await _repository.InsertAsync(new Domain.AggregatesModel.UserAggregate.User()
+            await _repository.InsertAsync(new Domain.Entities.UserAggregate.User()
             {
                 FirstName = "xyz",
                 ModifiedDate = DateTimeOffset.UtcNow,
                 LastName = "def",
                 CreatedDate = DateTimeOffset.UtcNow,
                 Email = "aaaa@abcd.com",
-                IsActivated = Domain.AggregatesModel.UserAggregate.Enums.ActivationStatus.NotActivated,
+                IsActivated = Domain.Entities.UserAggregate.Enums.ActivationStatus.NotActivated,
                 Status = Status.Active,
-                UserType = Domain.AggregatesModel.UserAggregate.Enums.UserType.User
+                UserType = Domain.Entities.UserAggregate.Enums.UserType.User
             }).ConfigureAwait(false);
 
             var users = _repository.Find(x => x.Email == "aaaa@abcd.com").ToList();

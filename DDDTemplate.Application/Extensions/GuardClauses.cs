@@ -2,7 +2,7 @@
 using Ardalis.GuardClauses;
 using System.Linq;
 using System.Collections.Generic;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.Entities.UserAggregate;
 using DDDTemplate.Domain.Entities.UserAggregate.Exceptions;
 
 namespace DDDTemplate.Core.Guard

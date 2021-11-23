@@ -4,7 +4,7 @@ using DDDTemplate.Infrastructure.Notification.Email;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.Extensions.DependencyInjection;
 using DDDTemplate.Persistence.Repository.User;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate;
+using DDDTemplate.Domain.Entities.UserAggregate;
 using DDDTemplate.Persistence.Context.Relational;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;

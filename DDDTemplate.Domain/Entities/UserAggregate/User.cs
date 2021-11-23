@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-using DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums;
+using DDDTemplate.Domain.Entities.UserAggregate.Enums;
 using DDDTemplate.Domain.Enums;
 using DDDTemplate.Domain.Interfaces;
 using DDDTemplate.Domain.Shared;
 
-namespace DDDTemplate.Domain.AggregatesModel.UserAggregate
+namespace DDDTemplate.Domain.Entities.UserAggregate
 {
     public class User : BaseEntity, IAggregateRoot, IAuditable, ISoftDeletable
     {

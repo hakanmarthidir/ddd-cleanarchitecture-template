@@ -1,4 +1,4 @@
-﻿namespace DDDTemplate.Domain.AggregatesModel.UserAggregate.Enums
+﻿namespace DDDTemplate.Domain.Entities.UserAggregate.Enums
 {
     public enum UserType : byte
     {
