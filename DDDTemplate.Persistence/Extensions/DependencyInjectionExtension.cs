@@ -12,21 +12,21 @@ using MongoDB.Bson.Serialization.Serializers;
 namespace DDDTemplate.Infrastructure.Extensions
 {
 
-    public class GuidSerializationProvider : IBsonSerializationProvider
-    {
-        public IBsonSerializer GetSerializer(Type type)
-        {
-            return type == typeof(Guid) ? new GuidSerializer(GuidRepresentation.CSharpLegacy) : null;
-        }
-    }
+    //public class GuidSerializationProvider : IBsonSerializationProvider
+    //{
+    //    public IBsonSerializer GetSerializer(Type type)
+    //    {
+    //        return type == typeof(Guid) ? new GuidSerializer(GuidRepresentation.CSharpLegacy) : null;
+    //    }
+    //}
     public static class DependencyInjectionExtension
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
 
             //----MONGO REGISTRATION -----
-            //BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
-            BsonSerializer.RegisterSerializationProvider(new GuidSerializationProvider());
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
+            //BsonSerializer.RegisterSerializationProvider(new GuidSerializationProvider());
             MongoDbPersistence.Configure();
             services.AddScoped<IMongoContext, MongoContext>();
 

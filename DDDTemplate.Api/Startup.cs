@@ -3,17 +3,12 @@ using DDDTemplate.Api.Middlewares;
 using DDDTemplate.Application.Contracts.Shared;
 using DDDTemplate.Application.Extensions;
 using DDDTemplate.Infrastructure.Extensions;
-using DDDTemplate.Infrastructure.Notification.Config;
-using DDDTemplate.Infrastructure.Security.Token.Config;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace DDDTemplate.Api
 {
@@ -31,7 +26,6 @@ namespace DDDTemplate.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
             services.AddPersistence(Configuration);
             services.AddInfrastructure(Configuration, HostingEnvironment);
             services.AddServices();
