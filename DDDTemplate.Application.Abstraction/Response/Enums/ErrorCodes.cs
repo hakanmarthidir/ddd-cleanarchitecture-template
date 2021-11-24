@@ -1,7 +1,8 @@
 ﻿namespace DDDTemplate.Application.Abstraction.Response.Enums
 {
-    public enum ErrorCodes : byte
+    public enum ErrorCodes : int
     {
+        NO_ERROR = -1,
         UNKNOWN_ERROR = 0,
         NULL_ARGUMENT = 1,
         ARGUMENT_WITH_WRONGVALUES = 2,

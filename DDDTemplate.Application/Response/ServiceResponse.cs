@@ -23,7 +23,7 @@ namespace DDDTemplate.Application.Response
 
         public string Message { get; set; }
 
-        public ErrorCodes ErrorCode { get; set; }
+        public ErrorCodes ErrorCode { get; set; } = ErrorCodes.NO_ERROR;
 
         public static ServiceResponse Success(string message = "Successfully completed.")
         {
@@ -54,7 +54,7 @@ namespace DDDTemplate.Application.Response
             ErrorCode = error;
         }
 
-        public ErrorCodes ErrorCode { get; set; }
+        public ErrorCodes ErrorCode { get; set; } = ErrorCodes.NO_ERROR;
 
         public ResponseStatus Status { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DDDTemplate.Infrastructure.Notification.Template
+namespace DDDTemplate.Application.Abstraction.External
 {
     public interface ITemplateService
     {

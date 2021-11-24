@@ -1,7 +1,6 @@
 ﻿using System;
-using Microsoft.Extensions.Configuration;
 
-namespace DDDTemplate.Infrastructure.Security.Token
+namespace DDDTemplate.Application.Abstraction.External
 {
     public interface ITokenService
     {

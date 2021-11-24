@@ -5,40 +5,34 @@ using DDDTemplate.Domain.Entities.UserAggregate;
 using DDDTemplate.Core.Guard;
 using AutoMapper;
 using Ardalis.GuardClauses;
-using DDDTemplate.Infrastructure.Security.Hash;
-using DDDTemplate.Infrastructure.Security.Token;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Domain.Enums;
 using Microsoft.Extensions.Logging;
 using DDDTemplate.Domain.Entities.UserAggregate.Enums;
-using DDDTemplate.Infrastructure.Notification.Template;
-using DDDTemplate.Infrastructure.Notification.Email;
-using DDDTemplate.Infrastructure.Notification.Config;
-using Microsoft.Extensions.Options;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Response;
 using DDDTemplate.Application.Abstraction.Response.Enums;
+using DDDTemplate.Application.Abstraction.External;
 
 namespace DDDTemplate.Application.User
 {
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
-
         private readonly IMapper _mapper;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
         private readonly ILogger<AuthenticationService> _logger;
         private readonly ITemplateService _templateService;
-        private readonly IMailGunApiService _mailGunService;
-        private readonly TemplateConfig _templateConfig;
+        private readonly IEmailService _mailGunService;
+
 
         public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository, IMapper mapper,
             IHashService hashService,
             ITokenService tokenService,
             ITemplateService templateService,
-            IMailGunApiService mailGunService,
-            IOptionsMonitor<TemplateConfig> templateConfig)
+            IEmailService mailGunService
+            )
         {
             this._userRepository = userRepository;
             this._mapper = mapper;
@@ -47,7 +41,6 @@ namespace DDDTemplate.Application.User
             this._logger = logger;
             this._templateService = templateService;
             this._mailGunService = mailGunService;
-            this._templateConfig = templateConfig.CurrentValue;
         }
 
         public async Task<IServiceResponse> SignUpAsync(UserRegisterDto userRegisterDto)
@@ -71,7 +64,7 @@ namespace DDDTemplate.Application.User
             await this._userRepository.InsertAsync(newUser).ConfigureAwait(false);
 
             var registeredUser = await GetUserByEmail(newUser.Email).ConfigureAwait(false);
-            await this.SendActivationCodeEmailAsync(registeredUser, this._templateConfig.ActivationEmailTitle).ConfigureAwait(false);
+            await this.SendActivationCodeEmailAsync(registeredUser, "Willkommen!").ConfigureAwait(false);
 
             this._logger.LogInformation($"{userRegisterDto.Email} - Account was created successfully.");
             return ServiceResponse.Success("User created successfully");
@@ -107,7 +100,7 @@ namespace DDDTemplate.Application.User
             var token = this._tokenService.GenerateToken(user.Id);
 
             var forgotPasswordEmailBody = await this._templateService.GetForgotPasswordTemplateAsync(user.FirstName, token).ConfigureAwait(false);
-            await this._mailGunService.SendWithMailgunApiAsync(user.Email, _templateConfig.ForgotPasswordEmailTitle, forgotPasswordEmailBody).ConfigureAwait(false);
+            await this._mailGunService.SendEmailAsync(user.Email, "Passwort vergessen?", forgotPasswordEmailBody).ConfigureAwait(false);
 
             this._logger.LogInformation($"{forgotPasswordDto.Email} - created a forgot password request.");
             return ServiceResponse.Success();
@@ -122,7 +115,6 @@ namespace DDDTemplate.Application.User
             this.ValidateJwtUser(mappedUser);
 
             return ServiceResponse<JwtMiddlewareDto>.Success(mappedUser);
-
         }
 
         public async Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
@@ -161,7 +153,7 @@ namespace DDDTemplate.Application.User
             user.CreateActivationCode();
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
 
-            await this.SendActivationCodeEmailAsync(user, this._templateConfig.ActivationEmailTitle).ConfigureAwait(false);
+            await this.SendActivationCodeEmailAsync(user, "RE:Activation Code").ConfigureAwait(false);
 
             this._logger.LogInformation($"{user.Email} - requested a new activation code.");
             return ServiceResponse.Success();
@@ -225,7 +217,7 @@ namespace DDDTemplate.Application.User
                 registeredUser.LastName,
                 registeredUser.ActivationCode).ConfigureAwait(false);
 
-            await this._mailGunService.SendWithMailgunApiAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
+            await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
         }
     }
 }

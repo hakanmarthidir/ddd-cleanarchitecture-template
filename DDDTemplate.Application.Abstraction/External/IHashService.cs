@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DDDTemplate.Infrastructure.Security.Hash
+namespace DDDTemplate.Application.Abstraction.External
 {
     public interface IHashService
     {

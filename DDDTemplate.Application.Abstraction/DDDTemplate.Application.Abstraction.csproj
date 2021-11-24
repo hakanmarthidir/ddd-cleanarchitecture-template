@@ -6,10 +6,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DDDTemplate.Application.Contracts\DDDTemplate.Application.Contracts.csproj" />
-    <ProjectReference Include="..\DDDTemplate.Infrastructure\DDDTemplate.Infrastructure.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Response\" />
     <Folder Include="Response\Enums\" />
+    <Folder Include="External\" />
   </ItemGroup>
 </Project>

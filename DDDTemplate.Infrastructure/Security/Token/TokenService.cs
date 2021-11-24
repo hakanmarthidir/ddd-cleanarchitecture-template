@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using DDDTemplate.Application.Abstraction.External;
 using DDDTemplate.Infrastructure.Security.Token.Config;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

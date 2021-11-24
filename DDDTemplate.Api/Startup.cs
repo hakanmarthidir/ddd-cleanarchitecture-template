@@ -2,6 +2,7 @@ using DDDTemplate.Api.ActionFilters;
 using DDDTemplate.Api.Middlewares;
 using DDDTemplate.Application.Contracts.Shared;
 using DDDTemplate.Application.Extensions;
+using DDDTemplate.Infrastructure.Extensions;
 using DDDTemplate.Infrastructure.Notification.Config;
 using DDDTemplate.Infrastructure.Security.Token.Config;
 using FluentValidation.AspNetCore;
@@ -31,21 +32,9 @@ namespace DDDTemplate.Api
         public void ConfigureServices(IServiceCollection services)
         {
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.CSharpLegacy));
-            services.Configure<MailGunConfig>(Configuration.GetSection("EmailConfig"));
-            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
-            services.Configure<TemplateConfig>(Configuration.GetSection("TemplateConfig"));
-
-            //Choose Database Context
-            //--------Context 1- MySql MariaDb-------------
-            //services.AddMySqlDatabaseContext(Configuration);
-
-            //---------Context 2- MongoDB------------
-            services.AddMongoDatabaseContext();
-
-            //Implementation Of Repositories and Services
-            services.AddRepositories();
+            services.AddPersistence(Configuration);
+            services.AddInfrastructure(Configuration, HostingEnvironment);
             services.AddServices();
-            //---------------------
 
             services.AddCors();
             services.AddControllers(opt =>
