@@ -9,7 +9,7 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace DDDTemplate.Infrastructure.Extensions
+namespace DDDTemplate.Persistence.Extensions
 {
 
     //public class GuidSerializationProvider : IBsonSerializationProvider

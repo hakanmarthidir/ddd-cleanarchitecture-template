@@ -3,6 +3,7 @@ using DDDTemplate.Api.Middlewares;
 using DDDTemplate.Application.Contracts.Shared;
 using DDDTemplate.Application.Extensions;
 using DDDTemplate.Infrastructure.Extensions;
+using DDDTemplate.Persistence.Extensions;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
