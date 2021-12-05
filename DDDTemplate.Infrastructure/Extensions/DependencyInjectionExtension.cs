@@ -1,4 +1,5 @@
 ﻿using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Infrastructure.Logging;
 using DDDTemplate.Infrastructure.Notification.Config;
 using DDDTemplate.Infrastructure.Notification.Email;
 using DDDTemplate.Infrastructure.Notification.Template;
@@ -23,7 +24,7 @@ namespace DDDTemplate.Infrastructure.Extensions
             services.AddTransient<ITemplateService, TemplateService>();
             services.AddTransient<IHashService, HashService>();
             services.AddTransient<ITokenService, TokenService>();
-
+            services.AddScoped(typeof(ILogService<>), typeof(LogService<>));
             return services;
         }
     }

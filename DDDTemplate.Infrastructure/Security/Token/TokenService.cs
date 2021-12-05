@@ -14,12 +14,10 @@ namespace DDDTemplate.Infrastructure.Security.Token
     public class TokenService : ITokenService
     {
         private readonly JwtConfig _jwtConfig;
-        private readonly ILogger<TokenService> _logger;
-
-        public TokenService(IOptionsMonitor<JwtConfig> jwtConfig, ILogger<TokenService> logger)
+        
+        public TokenService(IOptionsMonitor<JwtConfig> jwtConfig)
         {
             this._jwtConfig = jwtConfig.CurrentValue;
-            this._logger = logger;
         }
 
         public string GenerateToken(Guid userId)
@@ -72,8 +70,7 @@ namespace DDDTemplate.Infrastructure.Security.Token
             }
             catch (Exception ex)
             {
-                this._logger.LogError(ex, $"{token} - Validate token error occured.");
-                throw;
+                throw new ApplicationException(ex.Message);
             }
         }
 

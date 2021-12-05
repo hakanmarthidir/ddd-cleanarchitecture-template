@@ -22,12 +22,12 @@ namespace DDDTemplate.Application.User
         private readonly IMapper _mapper;
         private readonly IHashService _hashService;
         private readonly ITokenService _tokenService;
-        private readonly ILogger<AuthenticationService> _logger;
+        private readonly ILogService<AuthenticationService> _logger;
         private readonly ITemplateService _templateService;
         private readonly IEmailService _mailGunService;
 
 
-        public AuthenticationService(ILogger<AuthenticationService> logger, IUserRepository userRepository, IMapper mapper,
+        public AuthenticationService(ILogService<AuthenticationService> logger, IUserRepository userRepository, IMapper mapper,
             IHashService hashService,
             ITokenService tokenService,
             ITemplateService templateService,

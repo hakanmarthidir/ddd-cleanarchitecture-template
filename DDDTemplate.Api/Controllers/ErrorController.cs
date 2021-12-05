@@ -1,5 +1,6 @@
 ﻿using System;
 using DDDTemplate.Api.Controllers.Base;
+using DDDTemplate.Application.Abstraction.External;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Abstraction.Response.Enums;
 using DDDTemplate.Application.Response;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,8 +19,8 @@ namespace DDDTemplate.Api.Controllers
     public class ErrorController : BaseController
     {
 
-        private readonly ILogger<ErrorController> _logger;
-        public ErrorController(ILogger<ErrorController> logger)
+        private readonly ILogService<ErrorController> _logger;
+        public ErrorController(ILogService<ErrorController> logger)
         {
             this._logger = logger;
         }

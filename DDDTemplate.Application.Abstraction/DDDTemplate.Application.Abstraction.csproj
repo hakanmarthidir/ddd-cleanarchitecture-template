@@ -10,6 +10,5 @@
   <ItemGroup>
     <Folder Include="Response\" />
     <Folder Include="Response\Enums\" />
-    <Folder Include="External\" />
   </ItemGroup>
 </Project>
