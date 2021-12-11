@@ -27,12 +27,12 @@ namespace DDDTemplate.Api.Middlewares
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                await attachUserToContext(context, authService, token).ConfigureAwait(false);
+                await AttachUserToContext(context, authService, token).ConfigureAwait(false);
 
             await _next(context).ConfigureAwait(false);
         }
 
-        private async Task attachUserToContext(HttpContext context, IAuthenticationService authService, string token)
+        private async Task AttachUserToContext(HttpContext context, IAuthenticationService authService, string token)
         {
             try
             {
@@ -70,9 +70,7 @@ namespace DDDTemplate.Api.Middlewares
 
             }
             catch
-            {
-                // do nothing if jwt validation fails
-                // user is not attached to context so request won't have access to secure routes
+            {                
             }
         }
 
