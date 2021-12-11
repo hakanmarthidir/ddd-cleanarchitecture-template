@@ -7,6 +7,7 @@ using DDDTemplate.Domain.Shared;
 
 namespace DDDTemplate.Domain.Entities.UserAggregate
 {
+
     public class User : BaseEntity, IAggregateRoot, IAuditable, ISoftDeletable
     {
         public virtual string FirstName { get; set; }
@@ -14,11 +15,8 @@ namespace DDDTemplate.Domain.Entities.UserAggregate
         public virtual string Email { get; set; }
         [JsonIgnore]
         public virtual string Password { get; set; }
-        public virtual UserType UserType { get; set; }
-        public virtual ActivationStatus IsActivated { get; set; }
-        public virtual string ActivationCode { get; set; }
-        public virtual DateTimeOffset? ActivationDate { get; set; }
-
+        public virtual UserType UserType { get; set; }        
+        public virtual UserActivation Activation { get; set; }
         public virtual DateTimeOffset? CreatedDate { get; set; }
         public virtual DateTimeOffset? ModifiedDate { get; set; }
         public virtual string CreatedBy { get; set; }
@@ -26,6 +24,11 @@ namespace DDDTemplate.Domain.Entities.UserAggregate
         public virtual Status Status { get; set; }
         public virtual DateTimeOffset? DeletedDate { get; set; }
         public virtual string DeletedBy { get; set; }
+
+        public User()
+        {
+            this.Activation = new UserActivation();
+        }
 
         public virtual void SetDeletedDate(string deletedBy)
         {
@@ -41,14 +44,14 @@ namespace DDDTemplate.Domain.Entities.UserAggregate
 
         public virtual void ActivateUser()
         {
-            this.IsActivated = ActivationStatus.Activated;
-            this.ActivationDate = DateTimeOffset.UtcNow;
+            this.Activation.IsActivated = ActivationStatus.Activated;
+            this.Activation.ActivationDate = DateTimeOffset.UtcNow;
             SetModifiedDate(this.Id.ToString());
         }
 
         public virtual void CreateActivationCode()
         {
-            this.ActivationCode = Guid.NewGuid().ToString();
+            this.Activation.ActivationCode = Guid.NewGuid().ToString();
         }
 
         public virtual void SetPasswordAfterReset(string newPassword)
@@ -64,11 +67,10 @@ namespace DDDTemplate.Domain.Entities.UserAggregate
                 LastName = lastName,
                 Email = email,
                 Password = hashedPassword,
-                IsActivated = ActivationStatus.NotActivated,
+                Activation= new UserActivation(),      
                 Status = Status.Active,
                 CreatedDate = DateTimeOffset.UtcNow,
-                UserType = UserType.User,
-                ActivationCode = Guid.NewGuid().ToString()
+                UserType = UserType.User                
             };
 
             return newuser;
@@ -77,7 +79,7 @@ namespace DDDTemplate.Domain.Entities.UserAggregate
 
         public virtual bool CanActivate(string activationCode)
         {
-            return this.ActivationCode == activationCode && this.IsActivated == ActivationStatus.NotActivated;
+            return this.Activation.ActivationCode == activationCode && this.Activation.IsActivated == ActivationStatus.NotActivated;
         }
 
     }

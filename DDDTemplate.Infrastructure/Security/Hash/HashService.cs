@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Application.Abstraction.Interfaces;
 
 namespace DDDTemplate.Infrastructure.Security.Hash
 {

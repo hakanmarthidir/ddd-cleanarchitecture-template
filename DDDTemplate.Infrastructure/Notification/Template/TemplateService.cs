@@ -2,7 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Application.Abstraction.Interfaces;
 using DDDTemplate.Infrastructure.Extensions;
 using DDDTemplate.Infrastructure.Notification.Config;
 using Microsoft.AspNetCore.Hosting;

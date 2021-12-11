@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DDDTemplate.Application.Abstraction.External
+namespace DDDTemplate.Application.Abstraction.Interfaces
 {
     public interface ITemplateService
     {

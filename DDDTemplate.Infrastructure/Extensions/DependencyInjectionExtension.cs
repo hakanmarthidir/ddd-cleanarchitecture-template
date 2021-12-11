@@ -1,4 +1,4 @@
-﻿using DDDTemplate.Application.Abstraction.External;
+﻿using DDDTemplate.Application.Abstraction.Interfaces;
 using DDDTemplate.Infrastructure.Logging;
 using DDDTemplate.Infrastructure.Notification.Config;
 using DDDTemplate.Infrastructure.Notification.Email;

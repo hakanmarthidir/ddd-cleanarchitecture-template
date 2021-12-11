@@ -5,8 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
-    <Folder Include="Entities\UserAggregate\" />
     <Folder Include="Shared\" />
     <Folder Include="Entities\UserAggregate\Exceptions\" />
   </ItemGroup>

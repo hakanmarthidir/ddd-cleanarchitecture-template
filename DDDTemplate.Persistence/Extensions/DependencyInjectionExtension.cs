@@ -1,7 +1,9 @@
 ﻿using System;
 using DDDTemplate.Domain.Entities.UserAggregate;
+using DDDTemplate.Domain.Interfaces;
 using DDDTemplate.Persistence.Context.Mongo;
 using DDDTemplate.Persistence.Context.Mongo.ContextConfiguration;
+using DDDTemplate.Persistence.Repository.Mongo;
 using DDDTemplate.Persistence.Repository.User;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +42,7 @@ namespace DDDTemplate.Persistence.Extensions
             //services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 
             //REPOSITORIES ------
+            services.AddScoped(typeof(IRepository<>), typeof(MongoRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

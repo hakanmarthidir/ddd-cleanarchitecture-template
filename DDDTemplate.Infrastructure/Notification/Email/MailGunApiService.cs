@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using DDDTemplate.Infrastructure.Notification.Config;
-using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Application.Abstraction.Interfaces;
 
 namespace DDDTemplate.Infrastructure.Notification.Email
 {

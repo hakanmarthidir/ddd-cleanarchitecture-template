@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DDDTemplate.Domain.Enums;
+using DDDTemplate.Infrastructure.Security.Hash;
 using DDDTemplate.Persistence.Context.Mongo;
 using DDDTemplate.Persistence.Repository.User;
 using Microsoft.Extensions.Configuration;
@@ -39,23 +40,26 @@ namespace DDDTemplate.Test.RepositoryTests
             var _context = new MongoContext(configuration);
             UserRepository _repository = new UserRepository(_context);
 
+            HashService hashService = new HashService();
+            var hashed = await hashService.GetHashedStringAsync("12345").ConfigureAwait(false);
+
             await _repository.InsertAsync(new Domain.Entities.UserAggregate.User()
             {
                 FirstName = "xyz",
                 ModifiedDate = DateTimeOffset.UtcNow,
                 LastName = "def",
                 CreatedDate = DateTimeOffset.UtcNow,
-                Email = "aaaa@abcd.com",
-                IsActivated = Domain.Entities.UserAggregate.Enums.ActivationStatus.NotActivated,
+                Email = "hakan@abcd.com",                
                 Status = Status.Active,
-                UserType = Domain.Entities.UserAggregate.Enums.UserType.User
+                UserType = Domain.Entities.UserAggregate.Enums.UserType.User,
+                Password = hashed
+              
             }).ConfigureAwait(false);
 
-            var users = _repository.Find(x => x.Email == "aaaa@abcd.com").ToList();
+            var users = _repository.Find(x => x.Email == "hakan@abcd.com").ToList();
             Assert.IsTrue(users.Count > 0);
 
-
-            var userFirstOrDefault = await _repository.FirstOrDefaultAsync(x => x.Email == "aaaa@abcd.com").ConfigureAwait(false);
+            var userFirstOrDefault = await _repository.FirstOrDefaultAsync(x => x.Email == "hakan@abcd.com").ConfigureAwait(false);
             Assert.IsTrue(userFirstOrDefault != null);
 
             var user = await _repository.FindByIdAsync(userFirstOrDefault.Id).ConfigureAwait(false);

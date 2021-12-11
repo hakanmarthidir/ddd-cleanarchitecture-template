@@ -24,9 +24,9 @@ namespace DDDTemplate.Persistence.Context.Relational
             builder.Property(b => b.ModifiedDate);
             builder.Property(b => b.DeletedDate);
             builder.Property(b => b.Status).IsRequired().HasDefaultValue<Status>(Status.Active);
-            builder.Property(b => b.IsActivated).IsRequired().HasDefaultValue<ActivationStatus>(ActivationStatus.NotActivated);
-            builder.Property(b => b.ActivationCode).IsRequired();
-            builder.Property(b => b.ActivationDate);
+            builder.Property(b => b.Activation.IsActivated).IsRequired().HasDefaultValue<ActivationStatus>(ActivationStatus.NotActivated);
+            builder.Property(b => b.Activation.ActivationCode).IsRequired();
+            builder.Property(b => b.Activation.ActivationDate);
 
         }
 

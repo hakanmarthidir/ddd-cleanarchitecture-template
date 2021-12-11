@@ -1,4 +1,4 @@
-﻿using DDDTemplate.Application.Abstraction.External;
+﻿using DDDTemplate.Application.Abstraction.Interfaces;
 using Microsoft.Extensions.Logging;
 using System;
 

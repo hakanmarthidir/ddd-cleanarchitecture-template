@@ -1,6 +1,6 @@
 ﻿using System;
 using DDDTemplate.Api.Controllers.Base;
-using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Application.Abstraction.Interfaces;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Abstraction.Response.Enums;
 using DDDTemplate.Application.Response;

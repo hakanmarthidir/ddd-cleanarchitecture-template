@@ -12,7 +12,7 @@ using DDDTemplate.Domain.Entities.UserAggregate.Enums;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Response;
 using DDDTemplate.Application.Abstraction.Response.Enums;
-using DDDTemplate.Application.Abstraction.External;
+using DDDTemplate.Application.Abstraction.Interfaces;
 
 namespace DDDTemplate.Application.User
 {
@@ -145,7 +145,7 @@ namespace DDDTemplate.Application.User
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id).ConfigureAwait(false);
             Guard.Against.NullUser(userIdDto.Id, user, "ReSendActivationEmailAsync");
 
-            if (user.IsActivated == ActivationStatus.Activated)
+            if (user.Activation.IsActivated == ActivationStatus.Activated)
             {
                 this._logger.LogInformation($"{userIdDto.Id} - already activated.");
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
@@ -215,7 +215,7 @@ namespace DDDTemplate.Application.User
                 registeredUser.Id.ToString(),
                 registeredUser.FirstName,
                 registeredUser.LastName,
-                registeredUser.ActivationCode).ConfigureAwait(false);
+                registeredUser.Activation.ActivationCode).ConfigureAwait(false);
 
             await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
         }

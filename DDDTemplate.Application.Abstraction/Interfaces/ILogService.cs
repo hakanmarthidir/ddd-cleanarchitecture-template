@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DDDTemplate.Application.Abstraction.External
+namespace DDDTemplate.Application.Abstraction.Interfaces
 {
     public interface ILogService<T>
     {
