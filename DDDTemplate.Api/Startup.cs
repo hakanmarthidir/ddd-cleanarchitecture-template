@@ -66,8 +66,9 @@ namespace DDDTemplate.Api
                .AllowAnyMethod()
                .AllowAnyHeader());
 
-            // custom jwt auth middleware
-            app.UseMiddleware<JwtMiddleware>();
+            // custom middlewares            
+            app.UseCorrelationMiddleware();            
+            app.UseJwtMiddleware();
 
             app.UseEndpoints(endpoints =>
             {

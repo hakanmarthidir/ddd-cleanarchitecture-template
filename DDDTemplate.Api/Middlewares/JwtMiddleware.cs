@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Infrastructure.Security.Token.Config;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -74,5 +75,5 @@ namespace DDDTemplate.Api.Middlewares
             }
         }
 
-    }
+    }    
 }
