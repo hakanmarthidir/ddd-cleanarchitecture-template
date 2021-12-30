@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using AspectCore.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -63,6 +64,7 @@ namespace DDDTemplate.Api
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+            .UseServiceProviderFactory(new DynamicProxyServiceProviderFactory()); //for AOP
     }
 }

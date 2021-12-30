@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DDDTemplate.Api.Controllers.Base;
+using DDDTemplate.Application.Abstraction.Attributes;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Application.Contracts.Auth.Request;
@@ -21,13 +22,13 @@ namespace DDDTemplate.Api.Controllers
         {
             this._authenticationService = authenticationService;
         }
-
+        [Performance]
         [AllowAnonymous]
         [HttpPost]
         [Route("[action]")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IServiceResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> SignIn([FromBody] UserLoginDto model)
+        public virtual async Task<IActionResult> SignIn([FromBody] UserLoginDto model)
         {
             var response = await this._authenticationService.SignInAsync(model);
             return Ok(response);

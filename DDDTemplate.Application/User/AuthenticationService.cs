@@ -13,9 +13,11 @@ using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Response;
 using DDDTemplate.Application.Abstraction.Response.Enums;
 using DDDTemplate.Application.Abstraction.Interfaces;
+using DDDTemplate.Application.Abstraction.Attributes;
 
 namespace DDDTemplate.Application.User
 {
+    [Performance]
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
@@ -42,7 +44,7 @@ namespace DDDTemplate.Application.User
             this._templateService = templateService;
             this._mailGunService = mailGunService;
         }
-
+       
         public async Task<IServiceResponse> SignUpAsync(UserRegisterDto userRegisterDto)
         {
             this._logger.LogInformation($"{userRegisterDto.Email} - Signing Up ");
@@ -69,7 +71,7 @@ namespace DDDTemplate.Application.User
             this._logger.LogInformation($"{userRegisterDto.Email} - Account was created successfully.");
             return ServiceResponse.Success("User created successfully");
         }
-
+        //[Performance]
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
         {
             this._logger.LogInformation($"{userLoginDto.Email} - Loggining to system");

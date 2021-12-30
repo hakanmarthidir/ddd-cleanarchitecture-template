@@ -1,5 +1,8 @@
+using AspectCore.Configuration;
+using AspectCore.Extensions.DependencyInjection;
 using DDDTemplate.Api.ActionFilters;
 using DDDTemplate.Api.Middlewares;
+using DDDTemplate.Application.Abstraction.Attributes;
 using DDDTemplate.Application.Contracts.Auth.Validations;
 using DDDTemplate.Application.Extensions;
 using DDDTemplate.Infrastructure.Extensions;
@@ -31,7 +34,7 @@ namespace DDDTemplate.Api
             services.AddPersistence(Configuration);
             services.AddInfrastructure(Configuration, HostingEnvironment);
             services.AddServices();
-
+            //services.ConfigureDynamicProxy(config => config.Interceptors.AddTyped<PerformanceAttribute>()); // AspectCore - Global Interceptor
             services.AddCors();
             services.AddControllers(opt =>
                 {
@@ -44,7 +47,9 @@ namespace DDDTemplate.Api
                     fv.ImplicitlyValidateRootCollectionElements = true;
                     fv.RegisterValidatorsFromAssemblyContaining<ForgotPasswordValidator>();
 
-                });
+                })
+                .AddControllersAsServices()
+                ;
 
         }
 
