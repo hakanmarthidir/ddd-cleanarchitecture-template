@@ -1,6 +1,4 @@
-﻿using DDDTemplate.Application.Contracts.Shared;
-
-namespace DDDTemplate.Application.Contracts.Profile.Request
+﻿namespace DDDTemplate.Application.Contracts.Profile.Request
 {
     public class UserProfileUpdateDto
     {

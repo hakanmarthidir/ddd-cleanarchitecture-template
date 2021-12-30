@@ -1,10 +1,9 @@
 ﻿using DDDTemplate.Application.Contracts.Auth.Request;
-using DDDTemplate.Application.Contracts.Shared;
 using FluentValidation;
 
 namespace DDDTemplate.Application.Contracts.Auth.Validations
 {
-    public class ForgotPasswordValidator : AbstractValidator<ForgotPasswordDto>, IDataValidator
+    public class ForgotPasswordValidator : AbstractValidator<ForgotPasswordDto>
     {
         public ForgotPasswordValidator()
         {

@@ -1,5 +1,4 @@
 ﻿using System;
-using DDDTemplate.Application.Contracts.Shared;
 
 namespace DDDTemplate.Application.Contracts.Auth.Response
 {
@@ -10,7 +9,8 @@ namespace DDDTemplate.Application.Contracts.Auth.Response
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }
         public virtual string Token { get; set; }
-        public virtual ActivationState IsActivated { get; set; }
+        public virtual int UserType { get; set; }
+        public virtual int IsActivated { get; set; }
     }
 
 }

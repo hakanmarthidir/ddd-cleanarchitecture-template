@@ -145,7 +145,7 @@ namespace DDDTemplate.Application.User
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id).ConfigureAwait(false);
             Guard.Against.NullUser(userIdDto.Id, user, "ReSendActivationEmailAsync");
 
-            if (user.Activation.IsActivated == ActivationStatus.Activated)
+            if (user.Activation.IsActivated == ActivationStatusEnum.Activated)
             {
                 this._logger.LogInformation($"{userIdDto.Id} - already activated.");
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");

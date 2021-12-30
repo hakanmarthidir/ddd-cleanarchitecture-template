@@ -1,6 +1,4 @@
-﻿using DDDTemplate.Application.Contracts.Shared;
-
-namespace DDDTemplate.Application.Contracts.Auth.Response
+﻿namespace DDDTemplate.Application.Contracts.Auth.Response
 {
     public class TokenValidationDto
     {

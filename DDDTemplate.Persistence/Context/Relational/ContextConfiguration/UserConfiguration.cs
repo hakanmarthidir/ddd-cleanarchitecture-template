@@ -20,11 +20,11 @@ namespace DDDTemplate.Persistence.Context.Relational
             builder.Property(b => b.Password).IsRequired().HasMaxLength(255);
 
             builder.Property(b => b.CreatedDate).IsRequired().HasDefaultValue<DateTimeOffset?>(DateTimeOffset.UtcNow);
-            builder.Property(b => b.UserType).HasDefaultValue<UserType>(UserType.User);
+            builder.Property(b => b.UserType).HasDefaultValue<UserTypeEnum>(UserTypeEnum.User);
             builder.Property(b => b.ModifiedDate);
             builder.Property(b => b.DeletedDate);
             builder.Property(b => b.Status).IsRequired().HasDefaultValue<Status>(Status.Active);
-            builder.Property(b => b.Activation.IsActivated).IsRequired().HasDefaultValue<ActivationStatus>(ActivationStatus.NotActivated);
+            builder.Property(b => b.Activation.IsActivated).IsRequired().HasDefaultValue<ActivationStatusEnum>(ActivationStatusEnum.NotActivated);
             builder.Property(b => b.Activation.ActivationCode).IsRequired();
             builder.Property(b => b.Activation.ActivationDate);
 

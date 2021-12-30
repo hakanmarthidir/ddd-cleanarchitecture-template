@@ -1,11 +1,9 @@
-﻿using System;
-using DDDTemplate.Application.Contracts.Profile.Request;
-using DDDTemplate.Application.Contracts.Shared;
+﻿using DDDTemplate.Application.Contracts.Profile.Request;
 using FluentValidation;
 
 namespace DDDTemplate.Application.Contracts.Profile.Validations
 {
-    public class UserProfileUpdateValidator : AbstractValidator<UserProfileUpdateDto>, IDataValidator
+    public class UserProfileUpdateValidator : AbstractValidator<UserProfileUpdateDto>
     {
         public UserProfileUpdateValidator()
         {

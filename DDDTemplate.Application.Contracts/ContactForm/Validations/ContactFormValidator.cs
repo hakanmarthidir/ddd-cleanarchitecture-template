@@ -1,11 +1,9 @@
-﻿using System;
-using DDDTemplate.Application.Contracts.ContactForm.Request;
-using DDDTemplate.Application.Contracts.Shared;
+﻿using DDDTemplate.Application.Contracts.ContactForm.Request;
 using FluentValidation;
 
 namespace DDDTemplate.Application.Contracts.ContactForm.Validations
 {
-    public class ContactFormValidator : AbstractValidator<ContactFormCreateDto>, IDataValidator
+    public class ContactFormValidator : AbstractValidator<ContactFormCreateDto>
     {
         public ContactFormValidator()
         {

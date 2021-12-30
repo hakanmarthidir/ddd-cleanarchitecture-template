@@ -51,7 +51,7 @@ namespace DDDTemplate.Test.RepositoryTests
                 CreatedDate = DateTimeOffset.UtcNow,
                 Email = "hakan@abcd.com",                
                 Status = Status.Active,
-                UserType = Domain.Entities.UserAggregate.Enums.UserType.User,
+                UserType = Domain.Entities.UserAggregate.Enums.UserTypeEnum.User,
                 Password = hashed
               
             }).ConfigureAwait(false);

@@ -1,9 +1,10 @@
 using DDDTemplate.Api.ActionFilters;
 using DDDTemplate.Api.Middlewares;
-using DDDTemplate.Application.Contracts.Shared;
+using DDDTemplate.Application.Contracts.Auth.Validations;
 using DDDTemplate.Application.Extensions;
 using DDDTemplate.Infrastructure.Extensions;
 using DDDTemplate.Persistence.Extensions;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -41,7 +42,7 @@ namespace DDDTemplate.Api
                 {
                     fv.ImplicitlyValidateChildProperties = true;
                     fv.ImplicitlyValidateRootCollectionElements = true;
-                    fv.RegisterValidatorsFromAssemblyContaining<IDataValidator>();
+                    fv.RegisterValidatorsFromAssemblyContaining<ForgotPasswordValidator>();
 
                 });
 

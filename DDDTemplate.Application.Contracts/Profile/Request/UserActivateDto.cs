@@ -1,5 +1,4 @@
 ﻿using System;
-using DDDTemplate.Application.Contracts.Shared;
 
 namespace DDDTemplate.Application.Contracts.Profile.Request
 {

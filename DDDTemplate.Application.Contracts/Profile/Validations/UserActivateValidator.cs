@@ -1,10 +1,9 @@
 ﻿using DDDTemplate.Application.Contracts.Profile.Request;
-using DDDTemplate.Application.Contracts.Shared;
 using FluentValidation;
 
 namespace DDDTemplate.Application.Contracts.Profile.Validations
 {
-    public class UserActivateValidator : AbstractValidator<UserActivateDto>, IDataValidator
+    public class UserActivateValidator : AbstractValidator<UserActivateDto>
     {
         public UserActivateValidator()
         {

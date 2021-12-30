@@ -1,6 +1,4 @@
-﻿using DDDTemplate.Application.Contracts.Shared;
-
-namespace DDDTemplate.Application.Contracts.ContactForm.Request
+﻿namespace DDDTemplate.Application.Contracts.ContactForm.Request
 {
     public class ContactFormCreateDto
     {
