@@ -24,7 +24,7 @@ namespace DDDTemplate.Infrastructure.Extensions
             services.AddTransient<ITemplateService, TemplateService>();
             services.AddTransient<IHashService, HashService>();
             services.AddTransient<ITokenService, TokenService>();
-            services.AddScoped(typeof(ILogService<>), typeof(LogService<>));
+            services.AddSingleton(typeof(ILogService<>), typeof(LogService<>));
             return services;
         }
     }

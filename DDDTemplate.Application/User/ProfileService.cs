@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using DDDTemplate.Application.Abstraction.Attributes;
 using DDDTemplate.Application.Abstraction.Response;
 using DDDTemplate.Application.Abstraction.User;
 using DDDTemplate.Application.Contracts.Profile.Request;
@@ -7,6 +8,8 @@ using DDDTemplate.Application.Contracts.Profile.Response;
 
 namespace DDDTemplate.Application.User
 {
+    [Log]
+    [Performance]
     public class ProfileService : IProfileService
     {
         public Task<IServiceResponse> DeleteProfileAsync(Guid? userId)

@@ -18,6 +18,7 @@ using DDDTemplate.Application.Abstraction.Attributes;
 namespace DDDTemplate.Application.User
 {
     [Performance]
+    [Log]
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;
@@ -47,8 +48,6 @@ namespace DDDTemplate.Application.User
        
         public async Task<IServiceResponse> SignUpAsync(UserRegisterDto userRegisterDto)
         {
-            this._logger.LogInformation($"{userRegisterDto.Email} - Signing Up ");
-
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userRegisterDto.Email).ConfigureAwait(false);
             Guard.Against.AlreadyExist(user, $"{userRegisterDto.Email} - Email address already exists.");
 
@@ -67,14 +66,12 @@ namespace DDDTemplate.Application.User
 
             var registeredUser = await GetUserByEmail(newUser.Email).ConfigureAwait(false);
             await this.SendActivationCodeEmailAsync(registeredUser, "Willkommen!").ConfigureAwait(false);
-
-            this._logger.LogInformation($"{userRegisterDto.Email} - Account was created successfully.");
+            
             return ServiceResponse.Success("User created successfully");
         }
         //[Performance]
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
-        {
-            this._logger.LogInformation($"{userLoginDto.Email} - Loggining to system");
+        {            
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
@@ -87,15 +84,13 @@ namespace DDDTemplate.Application.User
 
             jwtUser.Token = this._tokenService.GenerateToken(jwtUser.Id);
             Guard.Against.NullOrWhiteSpace(jwtUser.Token, nameof(jwtUser.Token), "Token could not be generated.");
-
-            this._logger.LogInformation($"{userLoginDto.Email} - Logged in successfully.");
+            
             return ServiceResponse<UserLoggedinDto>.Success(jwtUser);
         }
 
         public async Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
-
-            this._logger.LogInformation($"{forgotPasswordDto.Email} - forgot password operation was started.");
+            
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Email == forgotPasswordDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User cannot be found.");
 
@@ -103,8 +98,7 @@ namespace DDDTemplate.Application.User
 
             var forgotPasswordEmailBody = await this._templateService.GetForgotPasswordTemplateAsync(user.FirstName, token).ConfigureAwait(false);
             await this._mailGunService.SendEmailAsync(user.Email, "Passwort vergessen?", forgotPasswordEmailBody).ConfigureAwait(false);
-
-            this._logger.LogInformation($"{forgotPasswordDto.Email} - created a forgot password request.");
+            
             return ServiceResponse.Success();
         }
 
@@ -126,16 +120,14 @@ namespace DDDTemplate.Application.User
 
             var userId = this._tokenService.GetUserIdByToken(resetPasswordDto.Token);
             Guard.Against.NullOrEmpty(userId, nameof(userId), $"{resetPasswordDto.Token} - Invalid token.");
-
-            this._logger.LogInformation($"{userId} - password reset operation was started.");
+            
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.NullUser(userId.Value, user, "ResetPasswordAsync");
 
             user.SetPasswordAfterReset(newPassword);
 
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
-
-            this._logger.LogInformation($"{userId} - password successfully updated.");
+           
             return ServiceResponse.Success();
         }
 
@@ -148,16 +140,14 @@ namespace DDDTemplate.Application.User
             Guard.Against.NullUser(userIdDto.Id, user, "ReSendActivationEmailAsync");
 
             if (user.Activation.IsActivated == ActivationStatusEnum.Activated)
-            {
-                this._logger.LogInformation($"{userIdDto.Id} - already activated.");
+            {                
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
             }
             user.CreateActivationCode();
             await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
 
             await this.SendActivationCodeEmailAsync(user, "RE:Activation Code").ConfigureAwait(false);
-
-            this._logger.LogInformation($"{user.Email} - requested a new activation code.");
+            
             return ServiceResponse.Success();
         }
 
@@ -165,18 +155,15 @@ namespace DDDTemplate.Application.User
         {
             Guard.Against.Null(userTokenDto, "Validate token", "Token cannot be found.");
             Guard.Against.NullOrWhiteSpace(userTokenDto.Token, nameof(userTokenDto.Token), "Token cannot be null.");
-
-            this._logger.LogInformation($"{userTokenDto.Token} - token validation operation was started.");
+            
             var isValid = this._tokenService.ValidateCurrentToken(userTokenDto.Token);
             var response = new TokenValidationDto() { IsValid = isValid };
-
-            this._logger.LogInformation($"{userTokenDto.Token} validation result is  {isValid}");
+            
             return ServiceResponse<TokenValidationDto>.Success(response);
         }
 
         public async Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto)
-        {
-            this._logger.LogInformation($"{userActivationDto.UserId} - activation operation was started.");
+        {            
 
             var user = await this._userRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId
                                                                       && x.Status == Status.Active).ConfigureAwait(false);
@@ -187,8 +174,7 @@ namespace DDDTemplate.Application.User
 
             user.ActivateUser();
 
-            await this._userRepository.UpdateAsync(user).ConfigureAwait(false);
-            this._logger.LogInformation($"{userActivationDto.UserId} - successfully activated.");
+            await this._userRepository.UpdateAsync(user).ConfigureAwait(false);           
 
             return ServiceResponse.Success();
         }
