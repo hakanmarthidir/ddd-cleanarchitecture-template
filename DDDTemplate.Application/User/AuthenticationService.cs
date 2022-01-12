@@ -18,7 +18,7 @@ using DDDTemplate.Application.Abstraction.Attributes;
 namespace DDDTemplate.Application.User
 {
     [Performance]
-    [Log]
+    [Log(true)]
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserRepository _userRepository;

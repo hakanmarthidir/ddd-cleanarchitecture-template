@@ -8,7 +8,7 @@ using DDDTemplate.Application.Contracts.Profile.Response;
 
 namespace DDDTemplate.Application.User
 {
-    [Log]
+    [Log(true)]
     [Performance]
     public class ProfileService : IProfileService
     {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using DDDTemplate.Infrastructure.Security.Hash;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
