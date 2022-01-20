@@ -1,4 +1,3 @@
-using JsonMasking;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System;

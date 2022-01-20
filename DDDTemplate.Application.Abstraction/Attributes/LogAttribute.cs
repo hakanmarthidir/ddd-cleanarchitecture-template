@@ -1,12 +1,7 @@
 ﻿using AspectCore.DynamicProxy;
-using AspectCore.DynamicProxy.Parameters;
 using DDDTemplate.Application.Abstraction.Interfaces;
-using DDDTemplate.Application.Abstraction.Response;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
