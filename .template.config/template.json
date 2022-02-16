@@ -1,68 +1,41 @@
 ﻿{
-    "$schema": "http://json.schemastore.org/template",
-    "author": "hakanhidir",
-    "classifications": [],
-    "description": "",
-    "name": "DDDTemplate",
-    "defaultName": "DDDTemplate",
-    "identity": "DDDTemplate",
-    "groupIdentity": "DDDTemplate",
-    "tags": {
-        "language": "C#",
-        "type": "project",
-        "vsmac-category": "other/net/general"
-    },
-    "shortName": "DDDTemplate",
-    "sourceName": "DDDTemplate",
-    "guids": [
-        "{3E7C2905-BA46-43CD-B899-00DB72AB800F}",
-        "{EF01B1DE-0F14-431C-9AC5-19216259F5A6}",
-        "{CC7E6C47-E57B-4783-8E1B-4E5690C5A926}",
-        "{85E47B5B-4577-49BD-A39D-8063F0EBC74C}",
-        "{15B095CA-7367-4528-B9C2-0748FCCA0869}",
-        "{EB814770-268A-46E0-BD2C-904AE2A08EEC}",
-        "{D6D22F11-6F04-4CB0-9D9A-5247605985C4}",
-        "{33D52040-FFD5-4F0C-BCD3-82213E50C002}",
-        "{77A2A92F-1DF8-4990-8C32-DABFD45E143F}"
-    ],
-    "sources": [
-        {
-            "modifiers": [
-                {
-                    "exclude": [
-                        ".vs/**/*"
-                    ]
-                }
-            ]
-        }
-    ],
-    "primaryOutputs": [
-        {
-            "path": "DDDTemplate.Api/DDDTemplate.Api.csproj"
-        },
-        {
-            "path": "DDDTemplate.Application/DDDTemplate.Application.csproj"
-        },
-        {
-            "path": "DDDTemplate.Application.Abstraction/DDDTemplate.Application.Abstraction.csproj"
-        },
-        {
-            "path": "DDDTemplate.Application.Contracts/DDDTemplate.Application.Contracts.csproj"
-        },
-        {
-            "path": "DDDTemplate.Core/DDDTemplate.Core.csproj"
-        },
-        {
-            "path": "DDDTemplate.Domain/DDDTemplate.Domain.csproj"
-        },
-        {
-            "path": "DDDTemplate.Infrastructure/DDDTemplate.Infrastructure.csproj"
-        },
-        {
-            "path": "DDDTemplate.Persistence/DDDTemplate.Persistence.csproj"
-        },
-        {
-            "path": "DDDTemplate.Test/DDDTemplate.Test.csproj"
-        }
-    ]
+  "$schema": "http://json.schemastore.org/template",
+  "author": "hakanhidir",
+  "classifications": [],
+  "name": "DDD Clean Architecture Web API Template",
+  "identity": "ddd-cleanarchitecture-template",
+  "groupIdentity": "ddd-cleanarchitecture-template",
+  "shortName": "dddcleantemplate",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "ddd-cleanarchitecture-template",
+  "preferNameDirectory": true,
+  "sources": [
+    {
+      "source": "./",
+      "target": "./",
+      "exclude": [
+        "**/README.md",
+        "**/nuget.config",
+        "**/LICENSE",
+        "**/.gitattributes",
+        "**/.gitignore",
+        "**/*.nupkg",
+        "**/[Bb]in/**",
+        "**/[Oo]bj/**",
+        ".template.config/**/*",
+        ".vs/**/*",
+        "**/*.filelist",
+        "**/*.user",
+        "**/*.lock.json",
+        "**/.git/**",
+        "**/.github/**",
+        "*.nuspec",
+        "**/node_modules/**",
+        "**/*.jpg"
+      ]
+    }
+  ]
 }

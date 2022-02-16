@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<Folder Include="Response\" />
+		<Folder Include="Response\Enums\" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
+		<PackageReference Include="AspectCore.Core" Version="2.2.0" />
+		<PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Application.Contracts\Application.Contracts.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>ddd-cleanarchitecture-template</id>
+    <version>1.0.0</version>
+    <authors>hakanhidir</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/hakanmarthidir/</projectUrl>
+    <description>template sample</description>
+    <releaseNotes>basic template sample</releaseNotes>
+    <copyright>$copyright$</copyright>
+    <tags>AspNetCore DDD EfCore CleanArchitecture Template</tags>    
+  </metadata>
+	<files>
+		<file src="**" exclude="**\bin\**\*;**\obj\**\*;**\*.user;**\*.lock.json;**\.DS_Store;**\.git\**\*;**\.github\**\*;**\.vs\**\*;**\*LICENSE;**\*.gitattributes;**\*README.md;**\*.gitignore;**\*nuget.config;" target="/content" />
+	</files>
+</package>
