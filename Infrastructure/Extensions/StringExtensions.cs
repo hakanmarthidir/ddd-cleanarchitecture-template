@@ -1,5 +1,4 @@
-﻿using System;
-namespace Infrastructure.Extensions
+﻿namespace Infrastructure.Extensions
 {
     public static class StringExtensions
     {

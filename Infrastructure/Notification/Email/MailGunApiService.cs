@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http;
+﻿using Application.Abstraction.Interfaces;
+using Infrastructure.Notification.Config;
+using Microsoft.Extensions.Options;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
-using Infrastructure.Notification.Config;
-using Application.Abstraction.Interfaces;
 
 namespace Infrastructure.Notification.Email
 {

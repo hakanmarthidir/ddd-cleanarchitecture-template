@@ -1,6 +1,5 @@
 ﻿using Application.Abstraction.Interfaces;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace Infrastructure.Logging
 {
@@ -12,9 +11,9 @@ namespace Infrastructure.Logging
             this._logService = loggerFactory.CreateLogger<T>();
         }
 
-        public void LogError(Exception exception,string message, params object[] args)
+        public void LogError(Exception exception, string message, params object[] args)
         {
-            this._logService.LogError(exception, message, args);    
+            this._logService.LogError(exception, message, args);
         }
 
         public void LogInformation(string message, params object[] args)

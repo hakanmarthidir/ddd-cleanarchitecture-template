@@ -1,8 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using Application.Abstraction.Interfaces;
 using Ardalis.GuardClauses;
-using Application.Abstraction.Interfaces;
 using Infrastructure.Extensions;
 using Infrastructure.Notification.Config;
 using Microsoft.AspNetCore.Hosting;

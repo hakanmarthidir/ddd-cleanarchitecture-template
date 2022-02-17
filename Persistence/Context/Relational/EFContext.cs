@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Domain.Entities.UserAggregate;
-using SmartEnum.EFCore;
+﻿using Domain.Entities.UserAggregate;
+using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Context.Relational
 {
@@ -20,9 +19,7 @@ namespace Persistence.Context.Relational
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
-            //modelBuilder.ConfigureSmartEnum();
         }
     }
 }
