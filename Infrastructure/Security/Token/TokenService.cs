@@ -1,4 +1,5 @@
 ﻿using Application.Abstraction.Interfaces;
+using Ardalis.GuardClauses;
 using Infrastructure.Security.Token.Config;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,6 +20,7 @@ namespace Infrastructure.Security.Token
 
         public string GenerateToken(Guid userId)
         {
+            Guard.Against.NullOrEmpty(userId, nameof(userId), "UserId could not be null or empty.");
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
@@ -32,6 +34,7 @@ namespace Infrastructure.Security.Token
             };
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            Guard.Against.Null(token, nameof(token), "Token could not be generated.");
 
             return tokenHandler.WriteToken(token);
         }
@@ -39,6 +42,7 @@ namespace Infrastructure.Security.Token
 
         public JwtSecurityToken GetToken(string token)
         {
+            Guard.Against.NullOrWhiteSpace(token, nameof(token), "Token could not be null.");
             try
             {
                 var mySecret = _jwtConfig.Secret;

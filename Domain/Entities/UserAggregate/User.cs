@@ -1,4 +1,5 @@
-﻿using Domain.Entities.UserAggregate.Enums;
+﻿using Ardalis.GuardClauses;
+using Domain.Entities.UserAggregate.Enums;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Shared;
@@ -8,18 +9,18 @@ namespace Domain.Entities.UserAggregate
 {
     public class User : BaseEntity<Guid>, IAggregateRoot, IAuditable, ISoftDeletable
     {
-        public virtual string FirstName { get; set; }
-        public virtual string LastName { get; set; }
-        public virtual string Email { get; set; }
+        public virtual string FirstName { get; private set; }
+        public virtual string LastName { get; private set; }
+        public virtual string Email { get; private set; }
         [JsonIgnore]
-        public virtual string Password { get; set; }
-        public virtual UserTypeEnum UserType { get; set; }
-        public virtual UserActivation Activation { get; set; }
-        public virtual DateTimeOffset? CreatedDate { get; set; }
-        public virtual DateTimeOffset? ModifiedDate { get; set; }
+        public virtual string Password { get; private set; }
+        public virtual UserTypeEnum UserType { get; private set; }
+        public virtual UserActivation Activation { get; private set; }
+        public virtual DateTimeOffset? CreatedDate { get;  set; }
+        public virtual DateTimeOffset? ModifiedDate { get;  set; }
         public virtual string? CreatedBy { get; set; }
         public virtual string? ModifiedBy { get; set; }
-        public virtual Status Status { get; set; }
+        public virtual Status Status { get;  set; }
         public virtual DateTimeOffset? DeletedDate { get; set; }
         public virtual string? DeletedBy { get; set; }        
 
@@ -56,10 +57,10 @@ namespace Domain.Entities.UserAggregate
         {
             var newuser = new User()
             {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                Password = hashedPassword,
+                FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName)),
+                LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName)),
+                Email = Guard.Against.NullOrWhiteSpace(email, nameof(email)),
+                Password = Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(hashedPassword)),
                 Activation = UserActivation.CreateUserActivation(),
                 Status = Status.Active,
                 CreatedBy = $"{firstName} {lastName}",

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using Application.Abstraction.Interfaces;
+using Ardalis.GuardClauses;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using Ardalis.GuardClauses;
-using Application.Abstraction.Interfaces;
 
 namespace Infrastructure.Security.Hash
 {
@@ -11,7 +9,7 @@ namespace Infrastructure.Security.Hash
     {
         public string GetHashedString(string hashValue)
         {
-            Guard.Against.NullOrEmpty(hashValue, "Hash value can not be null.");
+            Guard.Against.NullOrWhiteSpace(hashValue, nameof(hashValue), "Hash value could not be null.");
 
             string hashedValue = string.Empty;
 
@@ -38,12 +36,13 @@ namespace Infrastructure.Security.Hash
             }).ConfigureAwait(false);
         }
 
-
-        public bool VerifyHashes(string actualValue, string hashedValue)
-            => GetHashedString(actualValue) == hashedValue;
-
         public async Task<bool> VerifyHashesAsync(string actualValue, string hashedValue)
-             => await GetHashedStringAsync(actualValue) == hashedValue;
+        {
+            var value = await GetHashedStringAsync(actualValue).ConfigureAwait(false);
+            var hashed = Guard.Against.NullOrWhiteSpace(hashedValue, nameof(hashedValue), "Hashed value could not be null.");
+            return value == hashed;
+        }
+
 
     }
 }
