@@ -11,7 +11,7 @@ namespace Persistence.Context.Relational
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.ToTable("User");
-            builder.HasKey(b => b.Id);
+            builder.HasKey(x => x.Id);
             builder.Property(b => b.FirstName).IsRequired().HasMaxLength(255);
             builder.Property(b => b.LastName).IsRequired().HasMaxLength(255);
             builder.Property(b => b.Email).IsRequired().HasMaxLength(255);

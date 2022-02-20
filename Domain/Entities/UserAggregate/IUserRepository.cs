@@ -2,7 +2,7 @@
 
 namespace Domain.Entities.UserAggregate
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<User, Guid>
     {
     }
 }

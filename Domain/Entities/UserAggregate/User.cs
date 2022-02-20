@@ -6,9 +6,8 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Entities.UserAggregate
 {
-    public class User : BaseEntity, IAggregateRoot, IAuditable, ISoftDeletable
+    public class User : BaseEntity<Guid>, IAggregateRoot, IAuditable, ISoftDeletable
     {
-        public virtual Guid Id { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string LastName { get; set; }
         public virtual string Email { get; set; }

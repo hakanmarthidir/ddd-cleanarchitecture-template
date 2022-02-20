@@ -3,10 +3,10 @@ using System.Linq.Expressions;
 
 namespace Domain.Interfaces
 {
-    public interface IReadRepository<TEntity> where TEntity : BaseEntity, IAggregateRoot
+    public interface IReadRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>, IAggregateRoot
     {
-        TEntity FindById(Guid id);
-        Task<TEntity> FindByIdAsync(Guid id, CancellationToken token = default(CancellationToken));
+        TEntity FindById(TKey id);
+        Task<TEntity> FindByIdAsync(TKey id, CancellationToken token = default(CancellationToken));
 
         IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "", int? page = null, int? pageSize = null);
 
