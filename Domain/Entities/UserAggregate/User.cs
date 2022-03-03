@@ -16,19 +16,14 @@ namespace Domain.Entities.UserAggregate
         public virtual string Password { get; private set; }
         public virtual UserTypeEnum UserType { get; private set; }
         public virtual UserActivation Activation { get; private set; }
-        public virtual DateTimeOffset? CreatedDate { get;  set; }
-        public virtual DateTimeOffset? ModifiedDate { get;  set; }
-        public virtual string? CreatedBy { get; set; }
-        public virtual string? ModifiedBy { get; set; }
-        public virtual Status Status { get;  set; }
-        public virtual DateTimeOffset? DeletedDate { get; set; }
-        public virtual string? DeletedBy { get; set; }        
-
-        public virtual void SetDeletedDate(string deletedBy)
-        {
-            this.DeletedDate = DateTimeOffset.UtcNow;
-            this.DeletedBy = deletedBy;
-        }
+        public virtual DateTimeOffset? CreatedDate { get;  private set; }
+        public virtual DateTimeOffset? ModifiedDate { get; private set; }
+        public virtual string? CreatedBy { get; private set; }
+        public virtual string? ModifiedBy { get; private set; }
+        public virtual Status Status { get; private set; }
+        public virtual DateTimeOffset? DeletedDate { get; private set; }
+        public virtual string? DeletedBy { get; private set; }        
+              
 
         public virtual void SetModifiedDate(string modifiedBy)
         {
@@ -38,14 +33,14 @@ namespace Domain.Entities.UserAggregate
 
         public virtual void ActivateUser()
         {
-            this.Activation.IsActivated = ActivationStatusEnum.Activated;
-            this.Activation.ActivationDate = DateTimeOffset.UtcNow;
+            var activated = UserActivation.ActivateUser(this.Activation.ActivationCode);
+            this.Activation = activated;
             SetModifiedDate(this.Id.ToString());
         }
 
-        public virtual void CreateActivationCode()
+        public virtual void CreateNewActivationCode()
         {
-            this.Activation.ActivationCode = Guid.NewGuid().ToString();
+            this.Activation = UserActivation.CreateUserActivation();
         }
 
         public virtual void SetPasswordAfterReset(string newPassword)
@@ -69,7 +64,6 @@ namespace Domain.Entities.UserAggregate
             };
 
             return newuser;
-
         }
 
         public virtual bool CanActivate(string activationCode)
@@ -77,5 +71,11 @@ namespace Domain.Entities.UserAggregate
             return this.Activation.ActivationCode == activationCode && this.Activation.IsActivated == ActivationStatusEnum.NotActivated;
         }
 
+        public virtual void SoftDelete(string deletedBy)
+        {
+            this.DeletedBy = deletedBy;
+            this.Status = Status.Deleted;
+            this.DeletedDate = DateTimeOffset.UtcNow;
+        }
     }
 }

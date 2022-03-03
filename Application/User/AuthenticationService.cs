@@ -81,8 +81,8 @@ namespace Application.User
             var isVerifiedHash = await this._hashService.VerifyHashesAsync(userLoginDto.Password, user.Password).ConfigureAwait(false);
             Guard.Against.IsFalse(isVerifiedHash, $"Incorrect password.");
 
-            var jwtUser = _mapper.Map<UserLoggedinDto>(user);
-            Guard.Against.Null(jwtUser, nameof(jwtUser));
+            
+            var jwtUser =  Guard.Against.Null(_mapper.Map<UserLoggedinDto>(user), nameof(user));
 
             jwtUser.Token = this._tokenService.GenerateToken(jwtUser.Id);
             Guard.Against.NullOrWhiteSpace(jwtUser.Token, nameof(jwtUser.Token), "Token could not be generated.");
@@ -152,7 +152,7 @@ namespace Application.User
             {
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
             }
-            user.CreateActivationCode();
+            user.CreateNewActivationCode();
             await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
             await this._unitOfWork.SaveAsync().ConfigureAwait(false);
 

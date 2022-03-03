@@ -4,8 +4,10 @@ namespace Domain.Interfaces
 {
     public interface ISoftDeletable
     {
-        Status Status { get; set; }
-        DateTimeOffset? DeletedDate { get; set; }
-        string DeletedBy { get; set; }
+        Status Status { get; }
+        DateTimeOffset? DeletedDate { get; }
+        string DeletedBy { get; }
+
+        void SoftDelete(string deletedBy = "Admin");
     }
 }

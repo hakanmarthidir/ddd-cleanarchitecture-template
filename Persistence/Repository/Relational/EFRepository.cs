@@ -138,8 +138,7 @@ namespace Persistence.Repository.Relational
             {
                 if (deletedItem is ISoftDeletable e)
                 {
-                    e.Status = Status.Deleted;
-                    e.DeletedDate = DateTimeOffset.UtcNow;
+                    e.SoftDelete();                    
                     this.Update(deletedItem);
                 }
                 else
@@ -158,8 +157,7 @@ namespace Persistence.Repository.Relational
             {
                 if (deletedItem is ISoftDeletable e)
                 {
-                    e.Status = Status.Deleted;
-                    e.DeletedDate = DateTimeOffset.UtcNow;
+                    e.SoftDelete();                    
                     await this.UpdateAsync(deletedItem);
                 }
                 else
