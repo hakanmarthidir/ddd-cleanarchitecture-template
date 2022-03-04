@@ -22,8 +22,24 @@ namespace Domain.Entities.UserAggregate
         public virtual string? ModifiedBy { get; private set; }
         public virtual Status Status { get; private set; }
         public virtual DateTimeOffset? DeletedDate { get; private set; }
-        public virtual string? DeletedBy { get; private set; }        
-              
+        public virtual string? DeletedBy { get; private set; }
+
+        public User()
+        {
+
+        }
+        private User(string firstName, string lastName, string email, string hashedPassword)
+        {
+            FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
+            LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
+            Email = Guard.Against.NullOrWhiteSpace(email, nameof(email));
+            Password = Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(hashedPassword));
+            Activation = UserActivation.CreateUserActivation();
+            Status = Status.Active;
+            CreatedBy = $"{firstName} {lastName}";
+            CreatedDate = DateTimeOffset.UtcNow;
+            UserType = UserTypeEnum.User;
+        }   
 
         public virtual void SetModifiedDate(string modifiedBy)
         {
@@ -50,18 +66,7 @@ namespace Domain.Entities.UserAggregate
 
         public static User CreateUser(string firstName, string lastName, string email, string hashedPassword)
         {
-            var newuser = new User()
-            {
-                FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName)),
-                LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName)),
-                Email = Guard.Against.NullOrWhiteSpace(email, nameof(email)),
-                Password = Guard.Against.NullOrWhiteSpace(hashedPassword, nameof(hashedPassword)),
-                Activation = UserActivation.CreateUserActivation(),
-                Status = Status.Active,
-                CreatedBy = $"{firstName} {lastName}",
-                CreatedDate = DateTimeOffset.UtcNow,
-                UserType = UserTypeEnum.User
-            };
+            var newuser = new User(firstName, lastName, email, hashedPassword);
 
             return newuser;
         }

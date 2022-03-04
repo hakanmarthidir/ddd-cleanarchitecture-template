@@ -9,6 +9,12 @@ namespace Domain.Entities.UserAggregate
         public virtual ActivationStatusEnum IsActivated { get; private set; }
         public virtual string ActivationCode { get; private set; }
         public virtual DateTimeOffset? ActivationDate { get; private set; }
+        public UserActivation()
+        {
+
+        }
+
+
         private UserActivation(ActivationStatusEnum activationStatusEnum, string activationCode, DateTimeOffset? activationDate)
         {
             IsActivated = activationStatusEnum;

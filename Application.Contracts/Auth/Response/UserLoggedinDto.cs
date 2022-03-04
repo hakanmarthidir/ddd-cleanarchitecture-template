@@ -12,7 +12,6 @@ namespace Application.Contracts.Auth.Response
         public virtual string Email { get; set; }
         public virtual string Token { get; set; }
         public virtual UserTypeEnum UserType { get; set; }
-        public virtual UserActivation IsActivated { get; set; }
+        public virtual UserLoggedinActivationDto Activation { get; set; }
     }
-
 }

@@ -8,9 +8,11 @@ namespace Application.Mappers
         public AutoMappings()
         {
             // FROM Domain -> TO Dto
+            CreateMap<Domain.Entities.UserAggregate.UserActivation, UserLoggedinActivationDto>();
             CreateMap<Domain.Entities.UserAggregate.User, JwtMiddlewareDto>();
             CreateMap<Domain.Entities.UserAggregate.User, UserLoggedinDto>();
-               
+
+            
         }
     }
 }
