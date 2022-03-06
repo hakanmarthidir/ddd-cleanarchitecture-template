@@ -1,6 +1,9 @@
 ﻿using Application.Abstraction.Interfaces;
+using Ardalis.GuardClauses;
 using Infrastructure.Notification.Config;
 using Microsoft.Extensions.Options;
+using RestSharp;
+using RestSharp.Authenticators;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -12,24 +15,37 @@ namespace Infrastructure.Notification.Email
         private readonly MailGunConfig _mailGunConfig;
         public MailGunApiService(IOptionsMonitor<MailGunConfig> mailGunConfig)
         {
-            this._mailGunConfig = mailGunConfig.CurrentValue;
+            this._mailGunConfig = mailGunConfig.CurrentValue ?? throw new ArgumentNullException(nameof(mailGunConfig));
         }
 
-        public async Task SendEmailAsync(string receiver, string subject, string content, CancellationToken token = default)
+        public async Task<RestResponse> SendEmailAsync(string receiver, string subject, string content, string? attachmentFilePath = null, CancellationToken token = default)
         {
-            using (var httpClient = new HttpClient())
+
+            var to = Guard.Against.NullOrWhiteSpace(receiver, nameof(receiver), "Receiver could not be null.");
+            var topic = Guard.Against.NullOrWhiteSpace(subject, nameof(subject), "Subject could not be null.");
+            var html = Guard.Against.NullOrWhiteSpace(content, nameof(content), "Content could not be null.");
+
+            RestClient client = new RestClient(_mailGunConfig.BaseUrl);
+            client.Authenticator = new HttpBasicAuthenticator("api", _mailGunConfig.ApiKey);
+
+            var request = new RestRequest();
+            request.AddParameter("domain", _mailGunConfig.Domain, ParameterType.UrlSegment);
+            request.Resource = "{domain}/messages";
+            request.AddParameter("to", to);
+            request.AddParameter("from", $"{_mailGunConfig.Domain} <{_mailGunConfig.Sender}>");
+            request.AddParameter("subject", topic);
+            request.AddParameter("html", html);
+
+            if (!string.IsNullOrWhiteSpace(attachmentFilePath))
             {
-                var authToken = Encoding.ASCII.GetBytes($"api:{_mailGunConfig.Password}");
-                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authToken));
-                var formContent = new FormUrlEncodedContent(new Dictionary<string, string> {
-                                { "from", $"{_mailGunConfig.DisplayName} <{_mailGunConfig.Sender}>" },
-                                { "to", receiver },
-                                { "subject", subject },
-                                { "html", content }
-                                });
-                var result = await httpClient.PostAsync($"{_mailGunConfig.SmtpServer}{_mailGunConfig.UserName}/messages", formContent).ConfigureAwait(false);
-                result.EnsureSuccessStatusCode();
+                request.AddFile("attachment", attachmentFilePath, "multipart/form-data");
             }
+
+            request.Method = Method.Post;
+            var result = await client.ExecuteAsync(request, token).ConfigureAwait(false);
+            return result;
+
+            
         }
     }
 }

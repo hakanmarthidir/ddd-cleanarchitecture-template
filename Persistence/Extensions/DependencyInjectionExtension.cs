@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence.Context.Relational;
 using Persistence.Context.Relational.Uow;
 using Persistence.Repository.User;
+using System.Reflection;
+using MediatR;
 
 namespace Persistence.Extensions
 {
@@ -13,6 +15,7 @@ namespace Persistence.Extensions
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddDbContext<EFContext>(opt => opt.UseSqlServer(configuration.GetConnectionString("TemplateConnection")));
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
 

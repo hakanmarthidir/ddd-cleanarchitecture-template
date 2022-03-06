@@ -7,8 +7,9 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Entities.UserAggregate
 {
-    public class User : BaseEntity<Guid>, IAggregateRoot, IAuditable, ISoftDeletable
+    public class User : BaseEntity, IAggregateRoot, IAuditable, ISoftDeletable
     {
+        public virtual Guid Id { get; set; }
         public virtual string FirstName { get; private set; }
         public virtual string LastName { get; private set; }
         public virtual string Email { get; private set; }
@@ -16,7 +17,7 @@ namespace Domain.Entities.UserAggregate
         public virtual string Password { get; private set; }
         public virtual UserTypeEnum UserType { get; private set; }
         public virtual UserActivation Activation { get; private set; }
-        public virtual DateTimeOffset? CreatedDate { get;  private set; }
+        public virtual DateTimeOffset? CreatedDate { get; private set; }
         public virtual DateTimeOffset? ModifiedDate { get; private set; }
         public virtual string? CreatedBy { get; private set; }
         public virtual string? ModifiedBy { get; private set; }
@@ -28,7 +29,7 @@ namespace Domain.Entities.UserAggregate
         {
 
         }
-        private User(string firstName, string lastName, string email, string hashedPassword)
+        private User(string firstName, string lastName, string email, string hashedPassword) : this()
         {
             FirstName = Guard.Against.NullOrWhiteSpace(firstName, nameof(firstName));
             LastName = Guard.Against.NullOrWhiteSpace(lastName, nameof(lastName));
@@ -39,7 +40,7 @@ namespace Domain.Entities.UserAggregate
             CreatedBy = $"{firstName} {lastName}";
             CreatedDate = DateTimeOffset.UtcNow;
             UserType = UserTypeEnum.User;
-        }   
+        }
 
         public virtual void SetModifiedDate(string modifiedBy)
         {

@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Persistence.Repository.Relational
 {
-    public class EFRepository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : BaseEntity<TKey>, IAggregateRoot, new()
+    public class EFRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, IAggregateRoot, new()
     {
         protected readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _dbset;
@@ -81,12 +81,12 @@ namespace Persistence.Repository.Relational
 
         }
 
-        public TEntity FindById(TKey id)
+        public TEntity FindById<TId>(TId id)
         {
             return _dbset.Find(new object[] { id });
         }
 
-        public async Task<TEntity> FindByIdAsync(TKey id, CancellationToken token = default(CancellationToken))
+        public async Task<TEntity> FindByIdAsync<TId>(TId id, CancellationToken token = default(CancellationToken))
         {
             return await _dbset.FindAsync(new object[] { id }, token).ConfigureAwait(false);
         }
@@ -130,9 +130,9 @@ namespace Persistence.Repository.Relational
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(TKey id)
+        public void Delete<TId>(TId id)
         {
-            var deletedItem = FindById(id);
+            var deletedItem = FindById<TId>(id);
 
             if (deletedItem != null)
             {
@@ -149,9 +149,9 @@ namespace Persistence.Repository.Relational
 
         }
 
-        public async Task DeleteAsync(TKey id, CancellationToken token = default(CancellationToken))
+        public async Task DeleteAsync<TId>(TId id, CancellationToken token = default(CancellationToken))
         {
-            var deletedItem = await FindByIdAsync(id, token);
+            var deletedItem = await FindByIdAsync<TId>(id, token);
 
             if (deletedItem != null)
             {

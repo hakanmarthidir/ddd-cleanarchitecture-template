@@ -15,7 +15,7 @@ namespace Domain.Entities.UserAggregate
         }
 
 
-        private UserActivation(ActivationStatusEnum activationStatusEnum, string activationCode, DateTimeOffset? activationDate)
+        private UserActivation(ActivationStatusEnum activationStatusEnum, string activationCode, DateTimeOffset? activationDate) : this()
         {
             IsActivated = activationStatusEnum;
             ActivationCode = activationCode;

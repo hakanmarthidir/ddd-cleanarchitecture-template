@@ -6,6 +6,7 @@ using Application.Abstraction.User;
 using Application.Contracts.Auth.Request;
 using Application.Contracts.Auth.Response;
 using Application.Response;
+using Application.User.Events;
 using Ardalis.GuardClauses;
 using AutoMapper;
 using Core.Guard;
@@ -50,8 +51,8 @@ namespace Application.User
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userRegisterDto.Email).ConfigureAwait(false);
             Guard.Against.AlreadyExist(user, $"{userRegisterDto.Email} - Email address already exists.");
-            
-            var hashedPassword = await this._hashService.GetHashedStringAsync(userRegisterDto.Password).ConfigureAwait(false);            
+
+            var hashedPassword = await this._hashService.GetHashedStringAsync(userRegisterDto.Password).ConfigureAwait(false);
 
             var newUser = Domain.Entities.UserAggregate.User.CreateUser
             (
@@ -61,15 +62,14 @@ namespace Application.User
                 hashedPassword
             );
 
+            newUser.RaiseEvent(new UserCreatedEvent(newUser));
+
             await this._unitOfWork.UserRepository.InsertAsync(newUser).ConfigureAwait(false);
             await this._unitOfWork.SaveAsync().ConfigureAwait(false);
 
-            var registeredUser = await GetUserByEmail(newUser.Email).ConfigureAwait(false);
-            await this.SendActivationCodeEmailAsync(registeredUser, "Willkommen!").ConfigureAwait(false);
-
             return ServiceResponse.Success("User was created successfully.");
         }
-        
+
         public async Task<IServiceResponse<UserLoggedinDto>> SignInAsync(UserLoginDto userLoginDto)
         {
             Guard.Against.Null(userLoginDto, nameof(userLoginDto), "User could not be null to signin.");
@@ -77,12 +77,12 @@ namespace Application.User
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == userLoginDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User could not be found.");
-            
+
             var isVerifiedHash = await this._hashService.VerifyHashesAsync(userLoginDto.Password, user.Password).ConfigureAwait(false);
             Guard.Against.IsFalse(isVerifiedHash, $"Incorrect password.");
 
-            
-            var jwtUser =  Guard.Against.Null(_mapper.Map<UserLoggedinDto>(user), nameof(user));
+
+            var jwtUser = Guard.Against.Null(_mapper.Map<UserLoggedinDto>(user), nameof(user));
 
             jwtUser.Token = this._tokenService.GenerateToken(jwtUser.Id);
             Guard.Against.NullOrWhiteSpace(jwtUser.Token, nameof(jwtUser.Token), "Token could not be generated.");
@@ -121,7 +121,7 @@ namespace Application.User
 
         public async Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
-            Guard.Against.Null(resetPasswordDto, nameof(resetPasswordDto), "User data could not be null to reset password.");           
+            Guard.Against.Null(resetPasswordDto, nameof(resetPasswordDto), "User data could not be null to reset password.");
 
             var newPassword = await this._hashService.GetHashedStringAsync(resetPasswordDto.Password).ConfigureAwait(false);
             Guard.Against.NullOrEmpty(newPassword, nameof(newPassword), $"NewPassword could not be created.");
@@ -156,14 +156,14 @@ namespace Application.User
             await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
             await this._unitOfWork.SaveAsync().ConfigureAwait(false);
 
-            await this.SendActivationCodeEmailAsync(user, "RE:Activation Code").ConfigureAwait(false);
+            //await this.SendActivationCodeEmailAsync(user, "RE:Activation Code").ConfigureAwait(false);
 
             return ServiceResponse.Success();
         }
 
         public IServiceResponse<TokenValidationDto> ValidateToken(UserTokenDto userTokenDto)
         {
-            Guard.Against.Null(userTokenDto, nameof(userTokenDto), "Token could not be null.");            
+            Guard.Against.Null(userTokenDto, nameof(userTokenDto), "Token could not be null.");
 
             var isValid = this._tokenService.ValidateCurrentToken(userTokenDto.Token);
             var response = new TokenValidationDto() { IsValid = isValid };
@@ -208,15 +208,15 @@ namespace Application.User
             return user;
         }
 
-        private async Task SendActivationCodeEmailAsync(Domain.Entities.UserAggregate.User registeredUser, string emailTitle)
-        {
-            var activationEmailBody = await this._templateService.GetActivationTemplateAsync(
-                registeredUser.Id.ToString(),
-                registeredUser.FirstName,
-                registeredUser.LastName,
-                registeredUser.Activation.ActivationCode).ConfigureAwait(false);
+        //private async Task SendActivationCodeEmailAsync(Domain.Entities.UserAggregate.User registeredUser, string emailTitle)
+        //{
+        //    var activationEmailBody = await this._templateService.GetActivationTemplateAsync(
+        //        registeredUser.Id.ToString(),
+        //        registeredUser.FirstName,
+        //        registeredUser.LastName,
+        //        registeredUser.Activation.ActivationCode).ConfigureAwait(false);
 
-            await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
-        }
+        //    await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
+        //}
     }
 }

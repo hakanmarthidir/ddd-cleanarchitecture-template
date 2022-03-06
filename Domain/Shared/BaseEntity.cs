@@ -1,7 +1,18 @@
 ﻿namespace Domain.Shared
 {
-    public class BaseEntity<TKey>
-    {
-        public TKey Id { get; set; }
+    public abstract class BaseEntity
+    {        
+
+        public List<DomainEvent> _domainEvents = new List<DomainEvent>();
+
+        public void RaiseEvent(DomainEvent domainEvent)
+        {
+            this._domainEvents.Add(domainEvent);
+        }
+
+        public void ClearEvents()
+        {
+            this._domainEvents.Clear();
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace Infrastructure.Extensions
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
         {
-            services.Configure<MailGunConfig>(configuration.GetSection("EmailConfig"));
+            services.Configure<MailGunConfig>(configuration.GetSection("MailGunConfig"));
             services.Configure<JwtConfig>(configuration.GetSection("JwtConfig"));
             services.Configure<TemplateConfig>(configuration.GetSection("TemplateConfig"));
 
