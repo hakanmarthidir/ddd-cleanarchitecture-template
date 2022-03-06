@@ -4,8 +4,6 @@ using Infrastructure.Notification.Config;
 using Microsoft.Extensions.Options;
 using RestSharp;
 using RestSharp.Authenticators;
-using System.Net.Http.Headers;
-using System.Text;
 
 namespace Infrastructure.Notification.Email
 {
@@ -45,7 +43,7 @@ namespace Infrastructure.Notification.Email
             var result = await client.ExecuteAsync(request, token).ConfigureAwait(false);
             return result;
 
-            
+
         }
     }
 }

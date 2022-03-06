@@ -153,10 +153,10 @@ namespace Application.User
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
             }
             user.CreateNewActivationCode();
-            await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
-            await this._unitOfWork.SaveAsync().ConfigureAwait(false);
+            user.RaiseEvent(new UserActivationCodeDemandedEvent(user));
 
-            //await this.SendActivationCodeEmailAsync(user, "RE:Activation Code").ConfigureAwait(false);
+            await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
+            await this._unitOfWork.SaveAsync().ConfigureAwait(false);            
 
             return ServiceResponse.Success();
         }
@@ -207,16 +207,6 @@ namespace Application.User
 
             return user;
         }
-
-        //private async Task SendActivationCodeEmailAsync(Domain.Entities.UserAggregate.User registeredUser, string emailTitle)
-        //{
-        //    var activationEmailBody = await this._templateService.GetActivationTemplateAsync(
-        //        registeredUser.Id.ToString(),
-        //        registeredUser.FirstName,
-        //        registeredUser.LastName,
-        //        registeredUser.Activation.ActivationCode).ConfigureAwait(false);
-
-        //    await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
-        //}
+        
     }
 }

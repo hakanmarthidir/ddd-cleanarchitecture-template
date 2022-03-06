@@ -32,7 +32,7 @@ namespace Application.User.Handlers
 
             this._logger.LogInformation($"Activation Email was sent to {registeredUser.Id.ToString()}.");
 
-            await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
+            //await this._mailGunService.SendEmailAsync(registeredUser.Email, emailTitle, activationEmailBody).ConfigureAwait(false);
         }
     }
 }
