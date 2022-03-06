@@ -11,7 +11,7 @@ namespace Application.Mappers
             CreateMap<Domain.Entities.UserAggregate.UserActivation, UserLoggedinActivationDto>();
             CreateMap<Domain.Entities.UserAggregate.User, JwtMiddlewareDto>();
             CreateMap<Domain.Entities.UserAggregate.User, UserLoggedinDto>();
-
+            CreateMap<Domain.Entities.UserAggregate.User, GetRegisteredUserEmailDto>();
             
         }
     }

@@ -10,6 +10,7 @@ using Ardalis.GuardClauses;
 using AutoMapper;
 using Core.Guard;
 using Domain.Entities.UserAggregate.Enums;
+using Domain.Entities.UserAggregate.Specifications;
 using Domain.Enums;
 using Domain.Interfaces;
 
@@ -195,13 +196,14 @@ namespace Application.User
             Guard.Against.NullOrEmpty(jwtMiddlewareDto.Id, nameof(jwtMiddlewareDto.Id));
         }
 
-        private async Task<Domain.Entities.UserAggregate.User> GetUserByEmail(string email)
+        public async Task<IServiceResponse<List<GetRegisteredUserEmailDto>>> GetRegisteredUserList(int page, int pageSize)
         {
-            var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == email && x.Status == Status.Active).ConfigureAwait(false);
+            var result = await this._unitOfWork.UserRepository.FindAsync(new GetRegisteredUserSpec( Status.Active, page, pageSize)).ConfigureAwait(false);
 
-            Guard.Against.Null(user, nameof(user), "User could not be found.");
+            var userList = this._mapper.Map<List<GetRegisteredUserEmailDto>>(result);
+            Guard.Against.Null(userList, nameof(userList));
 
-            return user;
+            return ServiceResponse<List<GetRegisteredUserEmailDto>>.Success(userList);
         }
 
     }

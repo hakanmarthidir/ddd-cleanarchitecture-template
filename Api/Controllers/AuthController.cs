@@ -20,6 +20,20 @@ namespace Api.Controllers
         {
             this._authenticationService = authenticationService;
         }
+
+        [HttpGet]        
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IServiceResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> Get([FromQuery] int page, int pageSize)
+        {
+            var result = await this._authenticationService.GetRegisteredUserList(page, pageSize);
+
+            return Ok(result);
+        }
+
+
+
         [Performance]
         [AllowAnonymous]
         [HttpPost]

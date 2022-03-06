@@ -16,5 +16,6 @@ namespace Application.Abstraction.User
         Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto);
         Task<IServiceResponse> ReSendActivationEmailAsync(UserIdDto userIdDto);
         Task<IServiceResponse> ActivateAsync(UserActivationDto userActivationDto);
+        Task<IServiceResponse<List<GetRegisteredUserEmailDto>>> GetRegisteredUserList(int page, int pageSize);
     }
 }
