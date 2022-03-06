@@ -7,7 +7,6 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<Folder Include="Repository\" />
-		<Folder Include="Context\Relational\" />
 		<Folder Include="Repository\Relational\" />
 		<Folder Include="Context\Relational\ContextConfiguration\" />
 		<Folder Include="Repository\User\" />

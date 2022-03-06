@@ -1,5 +1,5 @@
 ﻿using Application.Abstraction.Interfaces;
-using Application.User.Events;
+using Domain.Entities.UserAggregate.Events;
 using MediatR;
 
 namespace Application.User.Handlers
@@ -18,7 +18,7 @@ namespace Application.User.Handlers
         }
 
         public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
-        {            
+        {
             await SendActivationCodeEmailAsync(notification.CreatedUser, "Welcome!");
         }
 

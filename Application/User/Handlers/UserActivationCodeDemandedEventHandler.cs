@@ -1,5 +1,5 @@
 ﻿using Application.Abstraction.Interfaces;
-using Application.User.Events;
+using Domain.Entities.UserAggregate.Events;
 using MediatR;
 
 namespace Application.User.Handlers

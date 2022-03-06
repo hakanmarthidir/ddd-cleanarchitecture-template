@@ -18,67 +18,16 @@ namespace Persistence.Repository.Relational
             _dbset = _dbContext.Set<TEntity>();
         }
 
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "", int? page = null, int? pageSize = null)
+        public ICollection<TEntity> Find(ISpec<TEntity> spec)
         {
-            IQueryable<TEntity> query = _dbset;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            if (page != null && pageSize != null)
-            {
-                query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
-            }
-
-            return query;
-
+            var query = this.SetSpec(spec);
+            return query.ToList();
         }
 
-        public async Task<ICollection<TEntity>> FindAsync(Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>,
-                IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "", int? page = null, int? pageSize = null)
+        public async Task<ICollection<TEntity>> FindAsync(ISpec<TEntity> spec, CancellationToken token = default(CancellationToken))
         {
-            IQueryable<TEntity> query = _dbset;
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            foreach (var includeProperty in includeProperties.Split
-                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
-
-            if (orderBy != null)
-            {
-                query = orderBy(query);
-            }
-
-            if (page != null && pageSize != null)
-            {
-                query = query.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
-            }
-
-            return await query.ToListAsync().ConfigureAwait(false);
-
+            var query = this.SetSpec(spec);
+            return await query.ToListAsync(token).ConfigureAwait(false);
         }
 
         public TEntity FindById<TId>(TId id)
@@ -138,7 +87,7 @@ namespace Persistence.Repository.Relational
             {
                 if (deletedItem is ISoftDeletable e)
                 {
-                    e.SoftDelete();                    
+                    e.SoftDelete();
                     this.Update(deletedItem);
                 }
                 else
@@ -157,7 +106,7 @@ namespace Persistence.Repository.Relational
             {
                 if (deletedItem is ISoftDeletable e)
                 {
-                    e.SoftDelete();                    
+                    e.SoftDelete();
                     await this.UpdateAsync(deletedItem);
                 }
                 else
@@ -177,11 +126,19 @@ namespace Persistence.Repository.Relational
             await Task.Run(() => _dbset.Remove(entity)).ConfigureAwait(false);
         }
 
-        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
-          => await this._dbset.FirstOrDefaultAsync(predicate).ConfigureAwait(false);
+        public async Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken token = default(CancellationToken))
+        {
+            return await this._dbset.FirstOrDefaultAsync(predicate, token).ConfigureAwait(false);
+        }
 
         public TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate)
-          => this._dbset.FirstOrDefault(predicate);
+        {
+            return this._dbset.FirstOrDefault(predicate);
+        }
 
+        private IQueryable<TEntity> SetSpec(ISpec<TEntity> specification)
+        {
+            return SpecHandler<TEntity>.GetQuery(this._dbset.AsQueryable(), specification);
+        }
     }
 }

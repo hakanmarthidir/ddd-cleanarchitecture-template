@@ -1,5 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using Domain.Entities.UserAggregate.Enums;
+using Domain.Entities.UserAggregate.Events;
 using Domain.Enums;
 using Domain.Interfaces;
 using Domain.Shared;
@@ -40,6 +41,7 @@ namespace Domain.Entities.UserAggregate
             CreatedBy = $"{firstName} {lastName}";
             CreatedDate = DateTimeOffset.UtcNow;
             UserType = UserTypeEnum.User;
+            this.RaiseEvent(new UserCreatedEvent(this));
         }
 
         public virtual void SetModifiedDate(string modifiedBy)
@@ -58,6 +60,7 @@ namespace Domain.Entities.UserAggregate
         public virtual void CreateNewActivationCode()
         {
             this.Activation = UserActivation.CreateUserActivation();
+            this.RaiseEvent(new UserActivationCodeDemandedEvent(this));
         }
 
         public virtual void SetPasswordAfterReset(string newPassword)

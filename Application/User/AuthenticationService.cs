@@ -6,7 +6,6 @@ using Application.Abstraction.User;
 using Application.Contracts.Auth.Request;
 using Application.Contracts.Auth.Response;
 using Application.Response;
-using Application.User.Events;
 using Ardalis.GuardClauses;
 using AutoMapper;
 using Core.Guard;
@@ -60,9 +59,7 @@ namespace Application.User
                 userRegisterDto.LastName,
                 userRegisterDto.Email,
                 hashedPassword
-            );
-
-            newUser.RaiseEvent(new UserCreatedEvent(newUser));
+            );            
 
             await this._unitOfWork.UserRepository.InsertAsync(newUser).ConfigureAwait(false);
             await this._unitOfWork.SaveAsync().ConfigureAwait(false);
@@ -152,11 +149,10 @@ namespace Application.User
             {
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
             }
-            user.CreateNewActivationCode();
-            user.RaiseEvent(new UserActivationCodeDemandedEvent(user));
+            user.CreateNewActivationCode();            
 
             await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
-            await this._unitOfWork.SaveAsync().ConfigureAwait(false);            
+            await this._unitOfWork.SaveAsync().ConfigureAwait(false);
 
             return ServiceResponse.Success();
         }
@@ -207,6 +203,6 @@ namespace Application.User
 
             return user;
         }
-        
+
     }
 }
