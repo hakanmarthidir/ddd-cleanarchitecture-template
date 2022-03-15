@@ -77,7 +77,7 @@ namespace Application.User
             Guard.Against.Null(user, nameof(user), "User could not be found.");
 
             var isVerifiedHash = await this._hashService.VerifyHashesAsync(userLoginDto.Password, user.Password).ConfigureAwait(false);
-            Guard.Against.IsFalse(isVerifiedHash, $"Incorrect password.");
+            Guard.Against.IsFalse(isVerifiedHash, $"A verification problem occured.");
 
 
             var jwtUser = Guard.Against.Null(_mapper.Map<UserLoggedinDto>(user), nameof(user));
@@ -91,6 +91,8 @@ namespace Application.User
         public async Task<IServiceResponse> ForgotPasswordAsync(ForgotPasswordDto forgotPasswordDto)
         {
             Guard.Against.Null(forgotPasswordDto, nameof(forgotPasswordDto), "User data could not be null.");
+            Guard.Against.NullOrWhiteSpace(forgotPasswordDto.Email, nameof(forgotPasswordDto.Email), "Email could not be null.");
+
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Email == forgotPasswordDto.Email && x.Status == Status.Active).ConfigureAwait(false);
             Guard.Against.Null(user, nameof(user), "User could not be found.");
 
@@ -98,7 +100,7 @@ namespace Application.User
             Guard.Against.NullOrWhiteSpace(token, nameof(token), "Token could not be generated.");
 
             var forgotPasswordEmailBody = await this._templateService.GetForgotPasswordTemplateAsync(user.FirstName, token).ConfigureAwait(false);
-            await this._mailGunService.SendEmailAsync(user.Email, "Passwort vergessen?", forgotPasswordEmailBody).ConfigureAwait(false);
+            await this._mailGunService.SendEmailAsync(user.Email, "Forgot password?", forgotPasswordEmailBody).ConfigureAwait(false);
 
             return ServiceResponse.Success();
         }
@@ -109,7 +111,7 @@ namespace Application.User
             Guard.Against.NullOrEmpty(userIdDto.Id, nameof(userIdDto.Id), "UserId could not be null.");
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.NullUser(userIdDto.Id, user, "GetJwtUserbyIdAsync");
+            Guard.Against.Null(user, nameof(user), "User could not be found.");
 
             var mappedUser = this._mapper.Map<JwtMiddlewareDto>(user);
             this.ValidateJwtUser(mappedUser);
@@ -120,6 +122,7 @@ namespace Application.User
         public async Task<IServiceResponse> ResetPasswordAsync(ResetPasswordDto resetPasswordDto)
         {
             Guard.Against.Null(resetPasswordDto, nameof(resetPasswordDto), "User data could not be null to reset password.");
+            Guard.Against.NullOrEmpty(resetPasswordDto.Token, nameof(resetPasswordDto.Token), $"Token could not be null.");
 
             var newPassword = await this._hashService.GetHashedStringAsync(resetPasswordDto.Password).ConfigureAwait(false);
             Guard.Against.NullOrEmpty(newPassword, nameof(newPassword), $"NewPassword could not be created.");
@@ -128,7 +131,7 @@ namespace Application.User
             Guard.Against.NullOrEmpty(userId, nameof(userId), $"{resetPasswordDto.Token} - Invalid token.");
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == userId && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.NullUser(userId.Value, user, "ResetPasswordAsync");
+            Guard.Against.Null(user, nameof(user), "User could not be found.");
 
             user.SetPasswordAfterReset(newPassword);
 
@@ -144,12 +147,11 @@ namespace Application.User
             Guard.Against.NullOrEmpty(userIdDto.Id, nameof(userIdDto.Id), "UserId could not be null.");
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == userIdDto.Id).ConfigureAwait(false);
-            Guard.Against.NullUser(userIdDto.Id, user, "ReSendActivationEmailAsync");
+            Guard.Against.Null(user, nameof(user), "User could not be found.");
 
-            if (user.Activation.IsActivated == ActivationStatusEnum.Activated)
-            {
+            if (user.Activation.IsActivated == ActivationStatusEnum.Activated)            
                 return ServiceResponse.Failure(ErrorCodes.INVALID_REQUEST, "User already activated.");
-            }
+            
             user.CreateNewActivationCode();            
 
             await this._unitOfWork.UserRepository.UpdateAsync(user).ConfigureAwait(false);
@@ -175,7 +177,7 @@ namespace Application.User
 
             var user = await this._unitOfWork.UserRepository.FirstOrDefaultAsync(x => x.Id == userActivationDto.UserId
                                                                       && x.Status == Status.Active).ConfigureAwait(false);
-            Guard.Against.NullUser(userActivationDto.UserId.Value, user, "UserId could not be found to activate.");
+            Guard.Against.Null(user, nameof(user), "User could not be found.");            
 
             var canActivate = user.CanActivate(userActivationDto.ActivationCode);
             Guard.Against.IsFalse(canActivate, "User could not be activated.");

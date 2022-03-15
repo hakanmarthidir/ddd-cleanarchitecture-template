@@ -3,7 +3,7 @@ using Domain.Shared;
 
 namespace Domain.Entities.UserAggregate.Specifications
 {
-    public class GetRegisteredUserSpec : BaseSpec<Domain.Entities.UserAggregate.User>
+    public class GetRegisteredUserSpec : BaseSpec<User>
     {
         public GetRegisteredUserSpec(Status studentStatus, int page, int pageSize) : base(x => x.Status == studentStatus)
         {
